@@ -123,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Basic dialog title'),
+          title: const Text('Change weight'),
           content: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -138,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
               style: TextButton.styleFrom(
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
-              child: const Text('Disable'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -147,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
               style: TextButton.styleFrom(
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
-              child: const Text('Enable'),
+              child: const Text('Save'),
               onPressed: () {
                 Navigator.of(context).pop();
                 // item.setData('wSquad', inputValue);

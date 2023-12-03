@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:full_body_routine/pages/week.dart';
 import 'package:full_body_routine/pages/workout.dart';
 import 'package:full_body_routine/pages/profile.dart';
-import 'package:full_body_routine/pages/settings.dart';
+// import 'package:full_body_routine/pages/settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +44,7 @@ void main() async {
           '/': (context) => const WeekPage(),
           '/workout': (context) => const WorkoutPage(),
           '/profile': (context) => const ProfilePage(),
-          '/settings': (context) => const SettingsPage(),
+          // '/settings': (context) => const SettingsPage(),
         },
       )));
 }
@@ -71,29 +71,61 @@ class ProfileInfo extends ChangeNotifier {
     'wBiceps',
     'bodyWeight'
   ];
-  // int b = 1;
-  void setPullLB(value) {
-    wPullLB = value;
-  }
-
-  void setHug(value) {
-    wHug = value;
-  }
-
-  void setSquad(value) {
+  setwSquad(String value) {
     wSquad = value;
+    print(value);
+
+    print(wSquad);
+    notifyListeners();
   }
 
-  void setBiceps(value) {
-    wBiceps = value;
-  }
-
-  void setTriceps(value) {
-    wTriceps = value;
-  }
-
-  void setBringing(value) {
+  void setwBringing(value) {
     wBringing = value;
+    notifyListeners();
+  }
+
+  void setwShoulders(value) {
+    wShoulders = value;
+    notifyListeners();
+  }
+
+  void setwHug(value) {
+    wHug = value;
+    notifyListeners();
+  }
+
+  void setwPullLB(value) {
+    wPullLB = value;
+    notifyListeners();
+  }
+
+  void setbodyWeight(value) {
+    bodyWeight = value;
+
+    notifyListeners();
+  }
+
+  void setwTriceps(value) {
+    wTriceps = value;
+
+    notifyListeners();
+  }
+
+  void setwBiceps(value) {
+    wBiceps = value;
+
+    notifyListeners();
+  }
+
+  void setWeight(String name, String value) {
+    // wPullLB = value;
+    print('n' + name);
+
+    name = value;
+    print('v' + value);
+
+    print(wSquad);
+    notifyListeners();
   }
 }
 
@@ -108,17 +140,12 @@ class CurrentWeek extends ChangeNotifier {
     counter++;
     _myBox.put('CurrentWeek', counter);
 
-    print('counter');
-
-    print(counter);
-    print('_myBox.get');
-
-    print(_myBox.get('CurrentWeek'));
     notifyListeners();
   }
 
   void minusCounter() {
-    if (_myBox.get('CurrentWeek') != counter) {
+    if (_myBox.get('CurrentWeek') != null &&
+        _myBox.get('CurrentWeek') != counter) {
       counter = _myBox.get('CurrentWeek');
     }
     counter--;

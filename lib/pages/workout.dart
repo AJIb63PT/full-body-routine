@@ -37,7 +37,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
     String currentDay = Provider.of<CurrentDay>(context).day;
     int currentWeek = Provider.of<CurrentWeek>(context).counter;
-    if (_myBox.get('CurrentWeek') != currentWeek) {
+    if (_myBox.get('CurrentWeek') != null &&
+        _myBox.get('CurrentWeek') != currentWeek) {
       currentWeek = _myBox.get('CurrentWeek');
     }
     int cycle = 1;

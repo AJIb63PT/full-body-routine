@@ -17,11 +17,13 @@ class Item {
     this.id,
     this.title,
     this.weight,
+    this.setData,
   );
 
   int id;
   String title;
   String weight;
+  Function setData;
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -37,9 +39,34 @@ class _ProfilePageState extends State<ProfilePage> {
     String wTriceps = Provider.of<ProfileInfo>(context).wTriceps;
     String wBiceps = Provider.of<ProfileInfo>(context).wBiceps;
 
-    List firstCol = ['Exercise', ...Provider.of<List>(context)];
+    Function setwSquad = Provider.of<ProfileInfo>(context).setwSquad;
+    Function setwBringing = Provider.of<ProfileInfo>(context).setwBringing;
+    Function setwShoulders = Provider.of<ProfileInfo>(context).setwShoulders;
+    Function setwHug = Provider.of<ProfileInfo>(context).setwHug;
+    Function setwPullLB = Provider.of<ProfileInfo>(context).setwPullLB;
+    Function setbodyWeight = Provider.of<ProfileInfo>(context).setbodyWeight;
+    Function setwTriceps = Provider.of<ProfileInfo>(context).setwTriceps;
+    Function setwBiceps = Provider.of<ProfileInfo>(context).setwBiceps;
+    Function setWeight = Provider.of<ProfileInfo>(context).setWeight;
+
+    List<Function> dataSets = [
+      // setWeight,
+      setwSquad,
+      setwBringing,
+      setwShoulders,
+      setwHug,
+      setwPullLB,
+      setbodyWeight,
+      setwTriceps,
+      setwBiceps,
+      setbodyWeight,
+    ];
+    List firstCol = [
+      // 'Exercise',
+      ...Provider.of<List>(context)
+    ];
     List secondCol = [
-      'Weight, kg',
+      // 'Weight, kg',
       wSquad,
       wBringing,
       wShoulders,
@@ -52,12 +79,9 @@ class _ProfilePageState extends State<ProfilePage> {
     ];
     List items = [];
     for (var i = 0; i < firstCol.length; i++) {
-      items.add(Item(
-        i,
-        firstCol[i],
-        secondCol[i],
-      ));
+      items.add(Item(i, firstCol[i], secondCol[i], dataSets[i]));
     }
+
     @override
     initState() {
       super.initState();
@@ -65,28 +89,19 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {});
     }
 
-    TableRow buildTableRow(Item item) {
-      return TableRow(
-          key: ValueKey(item.id),
-          decoration: const BoxDecoration(
-            color: Colors.lightBlueAccent,
-          ),
-          children: [
-            TableCell(
-              verticalAlignment: TableCellVerticalAlignment.middle,
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: Text(item.title),
-              ),
-            ),
-            TableCell(
-              verticalAlignment: TableCellVerticalAlignment.middle,
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: Text(item.weight),
-              ),
-            ),
-          ]);
+    InkWell buildListItem(Item item) {
+      return InkWell(
+        child: Container(
+            padding: const EdgeInsets.all(5),
+            child: ListTile(
+              title: Text(item.title),
+              subtitle: Text(item.weight + ' kg'),
+            )),
+        onTap: () {
+          print("tapped on container");
+          _dialogBuilder(context, item);
+        },
+      );
     }
 
     return Scaffold(
@@ -94,22 +109,54 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Profile'),
       ),
-      body: Table(
-        border: TableBorder.all(),
-        columnWidths: const <int, TableColumnWidth>{
-          0: IntrinsicColumnWidth(),
-          1: FlexColumnWidth(),
-        },
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: items.map((item) => buildTableRow(item)).toList(),
+      body: ListView(
+        padding: const EdgeInsets.all(8),
+        children: items.map((item) => buildListItem(item)).toList(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/settings');
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.create),
-      ),
+    );
+  }
+
+  Future<void> _dialogBuilder(BuildContext context, Item item) {
+    String inputValue = '';
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Basic dialog title'),
+          content: TextFormField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Enter your ' + item.title,
+            ),
+            onChanged: (text) {
+              inputValue = text;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Disable'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Enable'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                // item.setData('wSquad', inputValue);
+                item.setData(inputValue);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -34,7 +34,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => CurrentDay()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Full Body Routine',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
@@ -71,60 +71,40 @@ class ProfileInfo extends ChangeNotifier {
     'wBiceps',
     'bodyWeight'
   ];
-  setwSquad(String value) {
-    wSquad = value;
-    print(value);
-
-    print(wSquad);
-    notifyListeners();
-  }
-
-  void setwBringing(value) {
-    wBringing = value;
-    notifyListeners();
-  }
-
-  void setwShoulders(value) {
-    wShoulders = value;
-    notifyListeners();
-  }
-
-  void setwHug(value) {
-    wHug = value;
-    notifyListeners();
-  }
-
-  void setwPullLB(value) {
-    wPullLB = value;
-    notifyListeners();
-  }
-
-  void setbodyWeight(value) {
-    bodyWeight = value;
-
-    notifyListeners();
-  }
-
-  void setwTriceps(value) {
-    wTriceps = value;
-
-    notifyListeners();
-  }
-
-  void setwBiceps(value) {
-    wBiceps = value;
-
-    notifyListeners();
-  }
 
   void setWeight(String name, String value) {
-    // wPullLB = value;
-    print('n' + name);
-
-    name = value;
-    print('v' + value);
-
-    print(wSquad);
+    switch (name) {
+      case 'Squad':
+        wSquad = value;
+        break;
+      case 'Bringing Leg':
+        wBringing = value;
+        break;
+      case 'Shoulders':
+        wShoulders = value;
+        break;
+      case 'Hug':
+        wHug = value;
+        break;
+      case 'Pull ups Lower Block':
+        wPullLB = value;
+        break;
+      case 'Pull ups':
+        bodyWeight = value;
+        break;
+      case 'Abs':
+        bodyWeight = value;
+        break;
+      case 'Triceps':
+        wTriceps = value;
+        break;
+      case 'Biceps':
+        wTriceps = value;
+        break;
+      default:
+        print('no case');
+        break;
+    }
     notifyListeners();
   }
 }

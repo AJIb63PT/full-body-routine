@@ -17,13 +17,13 @@ class Item {
     this.id,
     this.title,
     this.weight,
-    this.setData,
+    // this.setData,
   );
 
   int id;
   String title;
   String weight;
-  Function setData;
+  // Function setData;
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -39,28 +39,6 @@ class _ProfilePageState extends State<ProfilePage> {
     String wTriceps = Provider.of<ProfileInfo>(context).wTriceps;
     String wBiceps = Provider.of<ProfileInfo>(context).wBiceps;
 
-    Function setwSquad = Provider.of<ProfileInfo>(context).setwSquad;
-    Function setwBringing = Provider.of<ProfileInfo>(context).setwBringing;
-    Function setwShoulders = Provider.of<ProfileInfo>(context).setwShoulders;
-    Function setwHug = Provider.of<ProfileInfo>(context).setwHug;
-    Function setwPullLB = Provider.of<ProfileInfo>(context).setwPullLB;
-    Function setbodyWeight = Provider.of<ProfileInfo>(context).setbodyWeight;
-    Function setwTriceps = Provider.of<ProfileInfo>(context).setwTriceps;
-    Function setwBiceps = Provider.of<ProfileInfo>(context).setwBiceps;
-    Function setWeight = Provider.of<ProfileInfo>(context).setWeight;
-
-    List<Function> dataSets = [
-      // setWeight,
-      setwSquad,
-      setwBringing,
-      setwShoulders,
-      setwHug,
-      setwPullLB,
-      setbodyWeight,
-      setwTriceps,
-      setwBiceps,
-      setbodyWeight,
-    ];
     List firstCol = [
       // 'Exercise',
       ...Provider.of<List>(context)
@@ -79,7 +57,11 @@ class _ProfilePageState extends State<ProfilePage> {
     ];
     List items = [];
     for (var i = 0; i < firstCol.length; i++) {
-      items.add(Item(i, firstCol[i], secondCol[i], dataSets[i]));
+      items.add(Item(
+        i,
+        firstCol[i],
+        secondCol[i],
+      ));
     }
 
     @override
@@ -118,6 +100,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _dialogBuilder(BuildContext context, Item item) {
     String inputValue = '';
+    Function setWeight =
+        Provider.of<ProfileInfo>(context, listen: false).setWeight;
 
     return showDialog<void>(
       context: context,
@@ -125,8 +109,9 @@ class _ProfilePageState extends State<ProfilePage> {
         return AlertDialog(
           title: const Text('Change weight'),
           content: TextFormField(
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
               labelText: 'Enter your ' + item.title,
             ),
             onChanged: (text) {
@@ -150,8 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: const Text('Save'),
               onPressed: () {
                 Navigator.of(context).pop();
-                // item.setData('wSquad', inputValue);
-                item.setData(inputValue);
+                setWeight(item.title, inputValue);
               },
             ),
           ],

@@ -35,7 +35,6 @@ class _WeekPageState extends State<WeekPage> {
         _myBox.get('CurrentWeek') != counter) {
       counter = _myBox.get('CurrentWeek');
     }
-    // int counter = _myBox.get('CurrentWeek');
 
     return Scaffold(
       appBar: AppBar(

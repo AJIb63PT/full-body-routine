@@ -17,15 +17,22 @@ class _WorkoutPageState extends State<WorkoutPage> {
   @override
   Widget build(BuildContext context) {
     final _myBox = Hive.box('myBox');
-
     String currentDay = Provider.of<CurrentDay>(context).day;
     int currentWeek = Provider.of<CurrentWeek>(context).counter;
+    List<String> Col_1 = Provider.of<ProfileInfo>(context).workoutExcises;
+    List<String> Col_2 = Provider.of<ProfileInfo>(context).Col_2();
+    List<String> Col_3 = Provider.of<ProfileInfo>(context).Col_3;
+    List<String> Col_4 = Provider.of<ProfileInfo>(context).Col_4;
+    int cycle = 1;
+    int quarter = currentWeek % 4;
+    List hardIndex = [];
+    List<Excise> items = [];
+
     if (_myBox.get('CurrentWeek') != null &&
         _myBox.get('CurrentWeek') != currentWeek) {
       currentWeek = _myBox.get('CurrentWeek');
     }
-    int cycle = 1;
-    int quarter = currentWeek % 4;
+
     if (currentWeek >= 4) {
       cycle = (currentWeek ~/ 4) + 1;
     }
@@ -38,14 +45,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
     print('c $cycle');
     print('q $quarter');
-
-    List<String> Col_1 = Provider.of<ProfileInfo>(context).workoutExcises;
-    List Col_2 = Provider.of<ProfileInfo>(context).Col_2();
-    List<String> Col_3 = Provider.of<ProfileInfo>(context).Col_3;
-    List<String> Col_4 = Provider.of<ProfileInfo>(context).Col_4;
-
-    List hardIndex = [];
-    List<Excise> items = [];
 
     if (currentDay == 'Tuesday') {
       hardIndex.addAll([6, 7, 9]);

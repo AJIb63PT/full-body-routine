@@ -79,7 +79,7 @@ class ProfileInfo extends ChangeNotifier {
     '12',
     '12',
     '12',
-    '12',
+    '20',
     '12',
     '12',
     '12',
@@ -101,21 +101,6 @@ class ProfileInfo extends ChangeNotifier {
       wBiceps,
       bodyWeight
     ];
-  }
-
-  List<Excise> exciseList() {
-    List<Excise> items = [];
-
-    for (var i = 1; i < workoutExcises.length; i++) {
-      items.add(Excise(
-        index: i,
-        title: workoutExcises[i],
-        weight: Col_2()[i],
-        sets: Col_3[i],
-        repeats: Col_4[i],
-      ));
-    }
-    return items;
   }
 
   void setWeight(String name, String value) {

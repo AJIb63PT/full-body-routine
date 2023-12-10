@@ -14,21 +14,8 @@ void main() async {
   Hive.init(appDocumentDirectory.path);
   var box = await Hive.openBox('myBox');
 
-  List workoutExcises = [
-    'Squad',
-    'Bringing Leg',
-    'Shoulders',
-    'Hug',
-    'Pull ups Lower Block',
-    'Pull ups',
-    'Triceps',
-    'Biceps',
-    'Abs'
-  ];
-
   runApp(MultiProvider(
       providers: [
-        Provider(create: (context) => workoutExcises),
         ChangeNotifierProvider(create: (context) => ProfileInfo()),
         ChangeNotifierProvider(create: (context) => CurrentWeek()),
         ChangeNotifierProvider(create: (context) => CurrentDay()),
@@ -54,23 +41,82 @@ class ProfileInfo extends ChangeNotifier {
 
   String wSquad = '80';
   String wBringing = '45';
+  String wCalf = '50';
   String wShoulders = '6';
   String wHug = '35';
   String wPullLB = '65';
-  String wTriceps = '35';
+  String wTriceps = '10';
   String wBiceps = '10';
 
-  List workoutExcisesVar = [
-    'wSquad',
-    'wBringing',
-    'wShoulders',
-    'wHug',
-    'wPullLB',
-    'bodyWeight',
-    'wTriceps',
-    'wBiceps',
-    'bodyWeight'
+  List<String> workoutExcises = [
+    'Exercise',
+    'Squad',
+    'Bringing Leg',
+    'Shoulders',
+    'Calf',
+    'Hug',
+    'Pull ups Lower Block',
+    'Pull ups',
+    'Triceps',
+    'Biceps',
+    'Abs'
   ];
+  List<String> Col_3 = [
+    'Sets',
+    '3',
+    '3',
+    '2',
+    '2',
+    '3',
+    '3',
+    '3',
+    '3',
+    '2',
+    '2'
+  ];
+  List<String> Col_4 = [
+    'Repeats',
+    '12',
+    '12',
+    '12',
+    '12',
+    '12',
+    '12',
+    '12',
+    '12',
+    '12',
+    '12'
+  ];
+  List<String> Col_2() {
+    return [
+      'Weight, kg',
+      wSquad,
+      wBringing,
+      wShoulders,
+      wCalf,
+      wHug,
+      wPullLB,
+      bodyWeight,
+      wTriceps,
+      wBiceps,
+      bodyWeight
+    ];
+  }
+
+  List<Excise> exciseList() {
+    List<Excise> items = [];
+
+    for (var i = 1; i < workoutExcises.length; i++) {
+      items.add(Excise(
+        index: i,
+        title: workoutExcises[i],
+        weight: Col_2()[i],
+        sets: Col_3[i],
+        repeats: Col_4[i],
+      ));
+    }
+    return items;
+  }
 
   void setWeight(String name, String value) {
     switch (name) {
@@ -99,7 +145,10 @@ class ProfileInfo extends ChangeNotifier {
         wTriceps = value;
         break;
       case 'Biceps':
-        wTriceps = value;
+        wBiceps = value;
+        break;
+      case 'Calf':
+        wCalf = value;
         break;
       default:
         print('no case');
@@ -107,6 +156,22 @@ class ProfileInfo extends ChangeNotifier {
     }
     notifyListeners();
   }
+}
+
+class Excise {
+  String title;
+  String weight;
+  int index;
+  String sets;
+  String repeats;
+
+  Excise({
+    this.index = 0,
+    required this.title,
+    this.weight = '0',
+    this.sets = '0',
+    this.repeats = '0',
+  });
 }
 
 class CurrentWeek extends ChangeNotifier {

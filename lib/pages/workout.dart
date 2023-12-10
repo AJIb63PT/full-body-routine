@@ -8,26 +8,9 @@ class WorkoutPage extends StatefulWidget {
   const WorkoutPage({
     super.key,
   });
-  // final String title;
 
   @override
   State<WorkoutPage> createState() => _WorkoutPageState();
-}
-
-class Item {
-  Item(
-    this.id,
-    this.title,
-    this.weight,
-    this.sets,
-    this.repeats,
-  );
-
-  int id;
-  String title;
-  String weight;
-  String sets;
-  String repeats;
 }
 
 class _WorkoutPageState extends State<WorkoutPage> {
@@ -56,49 +39,20 @@ class _WorkoutPageState extends State<WorkoutPage> {
     print('c $cycle');
     print('q $quarter');
 
-    String bodyWeight = Provider.of<ProfileInfo>(context).bodyWeight;
+    List<String> Col_1 = Provider.of<ProfileInfo>(context).workoutExcises;
+    List Col_2 = Provider.of<ProfileInfo>(context).Col_2();
+    List<String> Col_3 = Provider.of<ProfileInfo>(context).Col_3;
+    List<String> Col_4 = Provider.of<ProfileInfo>(context).Col_4;
 
-    String wSquad = Provider.of<ProfileInfo>(context).wSquad;
-    String wBringing = Provider.of<ProfileInfo>(context).wBringing;
-    String wShoulders = Provider.of<ProfileInfo>(context).wShoulders;
-    String wHug = Provider.of<ProfileInfo>(context).wHug;
-    String wPullLB = Provider.of<ProfileInfo>(context).wPullLB;
-    String wTriceps = Provider.of<ProfileInfo>(context).wTriceps;
-    String wBiceps = Provider.of<ProfileInfo>(context).wBiceps;
     List hardIndex = [];
-    List items = [];
-    List<String> Col_1 = ['Exercise', ...Provider.of<List>(context)];
-    List Col_2 = [
-      'Weight, kg',
-      wSquad,
-      wBringing,
-      wShoulders,
-      wHug,
-      wPullLB,
-      bodyWeight,
-      wTriceps,
-      wBiceps,
-      bodyWeight
-    ];
-    List<String> Col_3 = ['Sets', '3', '3', '2', '3', '3', '3', '3', '2', '2'];
-    List<String> Col_4 = [
-      'Repeats',
-      '12',
-      '12',
-      '12',
-      '12',
-      '12',
-      '12',
-      '12',
-      '12',
-      '12'
-    ];
+    List<Excise> items = [];
+
     if (currentDay == 'Tuesday') {
-      hardIndex.addAll([5, 6, 8]);
+      hardIndex.addAll([6, 7, 9]);
     }
 
     if (currentDay == 'Thursday') {
-      hardIndex.addAll([4, 7, 9]);
+      hardIndex.addAll([5, 8, 10]);
     }
 
     if (currentDay == 'Saturday') {
@@ -106,7 +60,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     }
 
     for (var i = 0; i < hardIndex.length; i++) {
-      if (hardIndex[i] == 6 || hardIndex[i] == 9) {
+      if (hardIndex[i] == 7 || hardIndex[i] == 10) {
         Col_2[hardIndex[i]] = (int.parse(Col_2[hardIndex[i]]) +
                 int.parse(Col_2[hardIndex[i]]) * .025 * cycle
             //  + int.parse(Col_2[hardIndex[i]]) * .1
@@ -138,12 +92,12 @@ class _WorkoutPageState extends State<WorkoutPage> {
       }
     }
     for (var i = 0; i < Col_1.length; i++) {
-      items.add(Item(
-        i,
-        Col_1[i],
-        Col_2[i],
-        Col_3[i],
-        Col_4[i],
+      items.add(Excise(
+        index: i,
+        title: Col_1[i],
+        weight: Col_2[i],
+        sets: Col_3[i],
+        repeats: Col_4[i],
       ));
     }
     @override
@@ -177,9 +131,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
       return Colors.lightBlueAccent;
     }
 
-    TableRow buildTableRow(Item item) {
+    TableRow buildTableRow(Excise item) {
       return TableRow(
-          key: ValueKey(item.id),
+          key: ValueKey(item.index),
           decoration: BoxDecoration(
             color: getColors(item.title),
           ),

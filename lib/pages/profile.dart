@@ -12,57 +12,10 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class Item {
-  Item(
-    this.id,
-    this.title,
-    this.weight,
-    // this.setData,
-  );
-
-  int id;
-  String title;
-  String weight;
-  // Function setData;
-}
-
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    String bodyWeight = Provider.of<ProfileInfo>(context).bodyWeight;
-
-    String wSquad = Provider.of<ProfileInfo>(context).wSquad;
-    String wBringing = Provider.of<ProfileInfo>(context).wBringing;
-    String wShoulders = Provider.of<ProfileInfo>(context).wShoulders;
-    String wHug = Provider.of<ProfileInfo>(context).wHug;
-    String wPullLB = Provider.of<ProfileInfo>(context).wPullLB;
-    String wTriceps = Provider.of<ProfileInfo>(context).wTriceps;
-    String wBiceps = Provider.of<ProfileInfo>(context).wBiceps;
-
-    List firstCol = [
-      // 'Exercise',
-      ...Provider.of<List>(context)
-    ];
-    List secondCol = [
-      // 'Weight, kg',
-      wSquad,
-      wBringing,
-      wShoulders,
-      wHug,
-      wPullLB,
-      bodyWeight,
-      wTriceps,
-      wBiceps,
-      bodyWeight
-    ];
-    List items = [];
-    for (var i = 0; i < firstCol.length; i++) {
-      items.add(Item(
-        i,
-        firstCol[i],
-        secondCol[i],
-      ));
-    }
+    List<Excise> exciseList = Provider.of<ProfileInfo>(context).exciseList();
 
     @override
     initState() {
@@ -71,16 +24,15 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {});
     }
 
-    InkWell buildListItem(Item item) {
+    InkWell buildListItem(Excise item) {
       return InkWell(
         child: Container(
             padding: const EdgeInsets.all(5),
             child: ListTile(
               title: Text(item.title),
-              subtitle: Text(item.weight + ' kg'),
+              subtitle: Text('${item.weight} kg'),
             )),
         onTap: () {
-          print("tapped on container");
           _dialogBuilder(context, item);
         },
       );
@@ -93,12 +45,12 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: ListView(
         padding: const EdgeInsets.all(8),
-        children: items.map((item) => buildListItem(item)).toList(),
+        children: exciseList.map((item) => buildListItem(item)).toList(),
       ),
     );
   }
 
-  Future<void> _dialogBuilder(BuildContext context, Item item) {
+  Future<void> _dialogBuilder(BuildContext context, Excise item) {
     String inputValue = '';
     Function setWeight =
         Provider.of<ProfileInfo>(context, listen: false).setWeight;
@@ -112,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
-              labelText: 'Enter your ' + item.title,
+              labelText: 'Enter your ${item.title}',
             ),
             onChanged: (text) {
               inputValue = text;

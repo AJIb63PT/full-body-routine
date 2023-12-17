@@ -40,7 +40,7 @@ class ProfileInfo extends ChangeNotifier {
   String bodyWeight = '80';
 
   String wSquad = '80';
-  String wBringing = '45';
+  String wBringing = '40';
   String wCalf = '50';
   String wShoulders = '6';
   String wHug = '35';
@@ -61,32 +61,7 @@ class ProfileInfo extends ChangeNotifier {
     'Biceps',
     'Abs'
   ];
-  List<String> Col_3 = [
-    'Sets',
-    '3',
-    '3',
-    '2',
-    '2',
-    '3',
-    '3',
-    '3',
-    '3',
-    '2',
-    '2'
-  ];
-  List<String> Col_4 = [
-    'Repeats',
-    '12',
-    '12',
-    '12',
-    '20',
-    '12',
-    '12',
-    '12',
-    '12',
-    '12',
-    '12'
-  ];
+
   List<String> Col_2() {
     return [
       'Weight, kg',

@@ -17,8 +17,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     List<String> Col_1 = Provider.of<ProfileInfo>(context).workoutExcises;
     List<String> Col_2 = Provider.of<ProfileInfo>(context).Col_2();
-    List<String> Col_3 = Provider.of<ProfileInfo>(context).Col_3;
-    List<String> Col_4 = Provider.of<ProfileInfo>(context).Col_4;
+
     List<Excise> exciseList = [];
 
     for (var i = 1; i < Col_1.length; i++) {
@@ -26,8 +25,6 @@ class _ProfilePageState extends State<ProfilePage> {
         index: i,
         title: Col_1[i],
         weight: Col_2[i],
-        sets: Col_3[i],
-        repeats: Col_4[i],
       ));
     }
     @override

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
@@ -19,19 +21,43 @@ class _WorkoutPageState extends State<WorkoutPage> {
     final _myBox = Hive.box('myBox');
     String currentDay = Provider.of<CurrentDay>(context).day;
     int currentWeek = Provider.of<CurrentWeek>(context).counter;
-    List<String> Col_1 = Provider.of<ProfileInfo>(context).workoutExcises;
-    List<String> Col_2 = Provider.of<ProfileInfo>(context).Col_2();
-    List<String> Col_3 = Provider.of<ProfileInfo>(context).Col_3;
-    List<String> Col_4 = Provider.of<ProfileInfo>(context).Col_4;
-    int cycle = 1;
-    int quarter = currentWeek % 4;
-    List hardIndex = [];
-    List<Excise> items = [];
-
     if (_myBox.get('CurrentWeek') != null &&
         _myBox.get('CurrentWeek') != currentWeek) {
       currentWeek = _myBox.get('CurrentWeek');
     }
+    List<String> Col_1 = Provider.of<ProfileInfo>(context).workoutExcises;
+    List<String> Col_2 = Provider.of<ProfileInfo>(context).Col_2();
+    List<String> Col_3 = [
+      'Sets',
+      '3',
+      '3',
+      '2',
+      '2',
+      '3',
+      '3',
+      '3',
+      '3',
+      '2',
+      '2'
+    ];
+    List<String> Col_4 = [
+      'Repeats',
+      '12',
+      '12',
+      '12',
+      '20',
+      '12',
+      '12',
+      '12',
+      '12',
+      '12',
+      '12'
+    ];
+
+    int cycle = 1;
+    int quarter = currentWeek % 4;
+    List hardIndex = [];
+    List<Excise> items = [];
 
     if (currentWeek >= 4) {
       cycle = (currentWeek ~/ 4) + 1;
@@ -57,6 +83,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     if (currentDay == 'Saturday') {
       hardIndex.addAll([1, 2, 3]);
     }
+    print('hardIndex $hardIndex');
 
     for (var i = 0; i < hardIndex.length; i++) {
       if (hardIndex[i] == 7 || hardIndex[i] == 10) {

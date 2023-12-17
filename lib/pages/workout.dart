@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
@@ -53,11 +51,10 @@ class _WorkoutPageState extends State<WorkoutPage> {
       '12',
       '12'
     ];
-
     int cycle = 1;
     int quarter = currentWeek % 4;
     List hardIndex = [];
-    List<Excise> items = [];
+    List<Excise> excises = [];
 
     if (currentWeek >= 4) {
       cycle = (currentWeek ~/ 4) + 1;
@@ -66,11 +63,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
       quarter = 4;
       cycle = (currentWeek ~/ 4);
     }
-
-    print('currentWeek $currentWeek');
-
-    print('c $cycle');
-    print('q $quarter');
 
     if (currentDay == 'Tuesday') {
       hardIndex.addAll([6, 7, 9]);
@@ -83,7 +75,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
     if (currentDay == 'Saturday') {
       hardIndex.addAll([1, 2, 3]);
     }
-    print('hardIndex $hardIndex');
 
     for (var i = 0; i < hardIndex.length; i++) {
       if (hardIndex[i] == 7 || hardIndex[i] == 10) {
@@ -118,7 +109,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       }
     }
     for (var i = 0; i < Col_1.length; i++) {
-      items.add(Excise(
+      excises.add(Excise(
         index: i,
         title: Col_1[i],
         weight: Col_2[i],
@@ -208,7 +199,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
           3: FlexColumnWidth(),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: items.map((item) => buildTableRow(item)).toList(),
+        children: excises.map((item) => buildTableRow(item)).toList(),
       ),
     );
   }

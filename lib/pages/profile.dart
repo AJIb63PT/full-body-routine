@@ -17,11 +17,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     List<String> Col_1 = Provider.of<ProfileInfo>(context).workoutExcises;
     List<String> Col_2 = Provider.of<ProfileInfo>(context).Col_2();
-
-    List<Excise> exciseList = [];
+    List<Excise> excises = [];
 
     for (var i = 1; i < Col_1.length; i++) {
-      exciseList.add(Excise(
+      excises.add(Excise(
         index: i,
         title: Col_1[i],
         weight: Col_2[i],
@@ -55,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: ListView(
         padding: const EdgeInsets.all(8),
-        children: exciseList.map((item) => buildListItem(item)).toList(),
+        children: excises.map((item) => buildListItem(item)).toList(),
       ),
     );
   }

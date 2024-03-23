@@ -39,19 +39,21 @@ void main() async {
 class ProfileInfo extends ChangeNotifier {
   String bodyWeight = '80';
 
-  String wSquad = '80';
+  String wSquad = '85';
   String wBringing = '40';
+  String wGoodMorning = '40';
   String wCalf = '50';
   String wShoulders = '6';
-  String wHug = '35';
+  String wHug = '45';
   String wPullLB = '65';
-  String wTriceps = '10';
-  String wBiceps = '10';
+  String wTriceps = '13';
+  String wBiceps = '12';
 
   List<String> workoutExcises = [
     'Exercise',
     'Squad',
     'Bringing Leg',
+    'Good Morning',
     'Shoulders',
     'Calf',
     'Hug',
@@ -67,6 +69,7 @@ class ProfileInfo extends ChangeNotifier {
       'Weight, kg',
       wSquad,
       wBringing,
+      wGoodMorning,
       wShoulders,
       wCalf,
       wHug,

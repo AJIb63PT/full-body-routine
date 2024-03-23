@@ -29,6 +29,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       'Sets',
       '3',
       '3',
+      '3',
       '2',
       '2',
       '3',
@@ -43,9 +44,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
       '12',
       '12',
       '12',
+      '12',
       '20',
       '12',
       '12',
+      '8',
       '12',
       '12',
       '12',
@@ -65,19 +68,19 @@ class _WorkoutPageState extends State<WorkoutPage> {
     }
 
     if (currentDay == 'Tuesday') {
-      hardIndex.addAll([6, 7, 9]);
+      hardIndex.addAll([7, 8, 10]);
     }
 
     if (currentDay == 'Thursday') {
-      hardIndex.addAll([5, 8, 10]);
+      hardIndex.addAll([1, 2, 3, 4]);
     }
 
     if (currentDay == 'Saturday') {
-      hardIndex.addAll([1, 2, 3]);
+      hardIndex.addAll([5, 6, 9, 11]);
     }
 
     for (var i = 0; i < hardIndex.length; i++) {
-      if (hardIndex[i] == 7 || hardIndex[i] == 10) {
+      if (hardIndex[i] == 8 || hardIndex[i] == 11) {
         Col_2[hardIndex[i]] = (int.parse(Col_2[hardIndex[i]]) +
                 int.parse(Col_2[hardIndex[i]]) * .025 * cycle
             //  + int.parse(Col_2[hardIndex[i]]) * .1
@@ -135,14 +138,18 @@ class _WorkoutPageState extends State<WorkoutPage> {
       }
 
       if (currentDay == 'Thursday' &&
-          (title == 'Abs' || title == 'Triceps' || title == 'Hug')) {
+          (title == 'Squad' ||
+              title == 'Bringing Leg' ||
+              title == 'Good Morning' ||
+              title == 'Shoulders')) {
         return Colors.orangeAccent;
       }
 
       if (currentDay == 'Saturday' &&
-          (title == 'Squad' ||
-              title == 'Bringing Leg' ||
-              title == 'Shoulders')) {
+          (title == 'Abs' ||
+              title == 'Calf' ||
+              title == 'Triceps' ||
+              title == 'Hug')) {
         return Colors.orangeAccent;
       }
       return Colors.lightBlueAccent;

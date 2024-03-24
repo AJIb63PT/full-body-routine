@@ -38,7 +38,7 @@ class _WeekPageState extends State<WeekPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Workout Week'),
+        title: const Text('Тренировочная неделя'),
       ),
       body: Column(children: [
         Container(
@@ -52,7 +52,7 @@ class _WeekPageState extends State<WeekPage> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       child: Text(
-                        'Current week $counter',
+                        'Текущая неделя $counter',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),

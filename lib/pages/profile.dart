@@ -30,14 +30,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final _controllerE = TextEditingController();
   final _controllerW = TextEditingController();
-
+//
   // checkbox was tapped
-  // void checkBoxChanged(bool? value, int index) {
-  //   setState(() {
-  //     db.toDoList[index][1] = !db.toDoList[index][1];
-  //   });
-  //   db.updateDataBase();
-  // }
+  checkBoxChanged(int index) {
+    setState(() {
+      db.toDoList[index][1] = !db.toDoList[index][1];
+    });
+    db.updateDataBase();
+  }
 
   saveNewTask() {
     String hardDay = Provider.of<DropDownState>(context, listen: false).day;
@@ -87,18 +87,58 @@ class _ProfilePageState extends State<ProfilePage> {
         onPressed: createNewTask,
         child: const Icon(Icons.add),
       ),
-      body: ListView.builder(
-        itemCount: db.toDoList.length,
-        itemBuilder: (context, index) {
+      body: ReorderableListView(
+        children: db.toDoList.asMap().entries.map((item) {
+          int idx = item.key;
+          List<String> val = item.value;
+
           return ExerciseTile(
-            taskName: db.toDoList[index][0],
-            weight: db.toDoList[index][1],
-            day: db.toDoList[index][2],
-            // onChanged: (value) => checkBoxChanged(value, index),
-            deleteFunction: (context) => deleteTask(index),
+            taskName: val[0],
+            weight: val[1],
+            day: val[2],
+            key: Key("${val}"),
+            // onChanged: (value) => checkBoxChanged(index),
+            deleteFunction: (context) => deleteTask(idx),
           );
+        }).toList(),
+        onReorder: (int start, int current) {
+          // dragging from top to bottom
+          if (start < current) {
+            int end = current - 1;
+            List<String> startItem = db.toDoList[start];
+            int i = 0;
+            int local = start;
+            do {
+              db.toDoList[local] = db.toDoList[++local];
+              i++;
+            } while (i < end - start);
+            db.toDoList[end] = startItem;
+          }
+          // dragging from bottom to top
+          else if (start > current) {
+            List<String> startItem = db.toDoList[start];
+            for (int i = start; i > current; i--) {
+              db.toDoList[i] = db.toDoList[i - 1];
+            }
+            db.toDoList[current] = startItem;
+          }
+          setState(() {
+            db.updateDataBase();
+          });
         },
       ),
+      // ListView.builder(
+      //   itemCount: db.toDoList.length,
+      //   itemBuilder: (context, index) {
+      //     return ExerciseTile(
+      //       taskName: db.toDoList[index][0],
+      //       weight: db.toDoList[index][1],
+      //       day: db.toDoList[index][2],
+      //       // onChanged: (value) => checkBoxChanged(index),
+      //       deleteFunction: (context) => deleteTask(index),
+      //     );
+      //   },
+      // ),
     );
   }
 }

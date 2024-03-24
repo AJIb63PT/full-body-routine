@@ -4,8 +4,9 @@ import 'my_button.dart';
 import 'my_dropDown.dart';
 
 class DialogBox extends StatelessWidget {
-  final controllerE;
-  final controllerW;
+  final TextEditingController controllerE;
+  final TextEditingController controllerW;
+
   final VoidCallback onSave;
   final VoidCallback onCancel;
 
@@ -55,12 +56,15 @@ class DialogBox extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 // save button
-                MyButton(text: "Save", onPressed: onSave),
+                MyButton(
+                  text: "Сохранить",
+                  onPressed: onSave,
+                ),
 
                 const SizedBox(width: 8),
 
                 // cancel button
-                MyButton(text: "Cancel", onPressed: onCancel),
+                MyButton(text: "Отмена", onPressed: onCancel),
               ],
             ),
           ],

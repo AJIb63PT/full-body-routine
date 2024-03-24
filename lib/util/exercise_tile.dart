@@ -5,14 +5,15 @@ class ExerciseTile extends StatelessWidget {
   final dynamic taskName;
   final dynamic weight;
   final dynamic day;
-  // Function(bool?)? onChanged;
+  // dynamic onChanged;
   final Function(BuildContext)? deleteFunction;
 
   const ExerciseTile({
-    super.key,
+    required super.key,
     required this.taskName,
     required this.weight,
     required this.day,
+
     // required this.onChanged,
     required this.deleteFunction,
   });
@@ -20,7 +21,7 @@ class ExerciseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 25.0, right: 25, top: 25),
+      padding: const EdgeInsets.only(left: 25, right: 25, top: 25),
       child: Slidable(
         endActionPane: ActionPane(
           motion: const StretchMotion(),
@@ -42,13 +43,17 @@ class ExerciseTile extends StatelessWidget {
             child: InkWell(
               child: Container(
                   padding: const EdgeInsets.all(5),
-                  child: ListTile(
-                    title: Text('${taskName}: ${weight} кг'),
-                    subtitle: Text(day.toString()),
-                  )),
-              onTap: () {
-                // _dialogBuilder(context, item);
-              },
+                  child: Row(children: [
+                    SizedBox(
+                        width: 250,
+                        child: ListTile(
+                          title: Text('${taskName}: ${weight} кг'),
+                          subtitle: Text(day.toString()),
+                        )),
+                    const SizedBox(width: 8),
+                    const SizedBox(width: 20, child: Icon(Icons.menu)),
+                  ])),
+              // onTap: () {},
             )),
       ),
     );

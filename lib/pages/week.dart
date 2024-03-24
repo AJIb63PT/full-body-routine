@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 
 import 'package:full_body_routine/main.dart';
-// import 'package:full_body_workout_program/pages/workout.dart';
 
 class WeekPage extends StatefulWidget {
   const WeekPage({

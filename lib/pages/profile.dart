@@ -1,107 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import '../data/database.dart';
+import '../util/dialog_box.dart';
+import '../util/exercise_tile.dart';
 import 'package:provider/provider.dart';
-
 import 'package:full_body_routine/main.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({
-    super.key,
-  });
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final _myBox = Hive.box('myBox');
+  ExerciseDataBase db = ExerciseDataBase();
+
   @override
-  Widget build(BuildContext context) {
-    List<String> Col_1 = Provider.of<ProfileInfo>(context).workoutExcises;
-    List<String> Col_2 = Provider.of<ProfileInfo>(context).Col_2();
-    List<Excise> excises = [];
-
-    for (var i = 1; i < Col_1.length; i++) {
-      excises.add(Excise(
-        index: i,
-        title: Col_1[i],
-        weight: Col_2[i],
-      ));
-    }
-    @override
-    initState() {
-      super.initState();
-
-      setState(() {});
+  void initState() {
+    if (_myBox.get("EXERCISELIST") == null) {
+      db.createInitialData();
+    } else {
+      db.loadData();
     }
 
-    InkWell buildListItem(Excise item) {
-      return InkWell(
-        child: Container(
-            padding: const EdgeInsets.all(5),
-            child: ListTile(
-              title: Text(item.title),
-              subtitle: Text('${item.weight} kg'),
-            )),
-        onTap: () {
-          _dialogBuilder(context, item);
-        },
-      );
-    }
+    super.initState();
+  }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Profile'),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: excises.map((item) => buildListItem(item)).toList(),
-      ),
+  final _controllerE = TextEditingController();
+  final _controllerW = TextEditingController();
+
+  // checkbox was tapped
+  // void checkBoxChanged(bool? value, int index) {
+  //   setState(() {
+  //     db.toDoList[index][1] = !db.toDoList[index][1];
+  //   });
+  //   db.updateDataBase();
+  // }
+
+  saveNewTask() {
+    String hardDay = Provider.of<DropDownState>(context, listen: false).day;
+    setState(() {
+      db.toDoList.add([
+        _controllerE.text,
+        _controllerW.text,
+        hardDay,
+      ]);
+      _controllerE.clear();
+      _controllerW.clear();
+    });
+    Navigator.of(context).pop();
+    db.updateDataBase();
+  }
+
+  void createNewTask() {
+    Provider.of<DropDownState>(context, listen: false).setDay('Вторник');
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DialogBox(
+          controllerE: _controllerE,
+          controllerW: _controllerW,
+          onSave: saveNewTask,
+          onCancel: () => Navigator.of(context).pop(),
+        );
+      },
     );
   }
 
-  Future<void> _dialogBuilder(BuildContext context, Excise item) {
-    String inputValue = '';
-    Function setWeight =
-        Provider.of<ProfileInfo>(context, listen: false).setWeight;
+  void deleteTask(int index) {
+    setState(() {
+      db.toDoList.removeAt(index);
+    });
+    db.updateDataBase();
+  }
 
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Change weight'),
-          content: TextFormField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              labelText: 'Enter your ${item.title}',
-            ),
-            onChanged: (text) {
-              inputValue = text;
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Save'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                setWeight(item.title, inputValue);
-              },
-            ),
-          ],
-        );
-      },
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        elevation: 0,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: createNewTask,
+        child: const Icon(Icons.add),
+      ),
+      body: ListView.builder(
+        itemCount: db.toDoList.length,
+        itemBuilder: (context, index) {
+          return ExerciseTile(
+            taskName: db.toDoList[index][0],
+            weight: db.toDoList[index][1],
+            day: db.toDoList[index][2],
+            // onChanged: (value) => checkBoxChanged(value, index),
+            deleteFunction: (context) => deleteTask(index),
+          );
+        },
+      ),
     );
   }
 }

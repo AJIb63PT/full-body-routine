@@ -3,15 +3,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ExerciseTile extends StatelessWidget {
   final dynamic taskName;
-  final dynamic width;
+  final dynamic weight;
   final dynamic day;
   // Function(bool?)? onChanged;
-  Function(BuildContext)? deleteFunction;
+  final Function(BuildContext)? deleteFunction;
 
-  ExerciseTile({
+  const ExerciseTile({
     super.key,
     required this.taskName,
-    required this.width,
+    required this.weight,
     required this.day,
     // required this.onChanged,
     required this.deleteFunction,
@@ -23,7 +23,7 @@ class ExerciseTile extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0, right: 25, top: 25),
       child: Slidable(
         endActionPane: ActionPane(
-          motion: StretchMotion(),
+          motion: const StretchMotion(),
           children: [
             SlidableAction(
               onPressed: deleteFunction,
@@ -34,7 +34,7 @@ class ExerciseTile extends StatelessWidget {
           ],
         ),
         child: Container(
-            padding: EdgeInsets.all(24),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: Colors.deepPurple[200],
               borderRadius: BorderRadius.circular(12),
@@ -43,7 +43,7 @@ class ExerciseTile extends StatelessWidget {
               child: Container(
                   padding: const EdgeInsets.all(5),
                   child: ListTile(
-                    title: Text('${taskName} ${width} kg'),
+                    title: Text('${taskName}: ${weight} кг'),
                     subtitle: Text(day.toString()),
                   )),
               onTap: () {

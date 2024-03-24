@@ -83,8 +83,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
     Col_1.insert(0, "Упражнение");
     Col_2.insert(0, "Вес, кг");
-    Col_3.insert(0, "Sets");
-    Col_4.insert(0, "Repeats");
+    Col_3.insert(0, "Подход");
+    Col_4.insert(0, "Повтор-ие");
     hardDay.insert(0, "Вторник");
 
     for (var i = 0; i < Col_1.length; i++) {
@@ -156,7 +156,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text('$currentDay at $currentWeek week')),
+          title: Text('$currentDay на $currentWeek неделе')),
       body: Table(
         border: TableBorder.all(),
         columnWidths: const <int, TableColumnWidth>{

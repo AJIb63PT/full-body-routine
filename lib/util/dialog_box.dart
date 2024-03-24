@@ -6,10 +6,10 @@ import 'my_dropDown.dart';
 class DialogBox extends StatelessWidget {
   final controllerE;
   final controllerW;
-  VoidCallback onSave;
-  VoidCallback onCancel;
+  final VoidCallback onSave;
+  final VoidCallback onCancel;
 
-  DialogBox({
+  const DialogBox({
     super.key,
     required this.controllerE,
     required this.controllerW,

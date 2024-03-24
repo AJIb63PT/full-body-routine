@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
+import '../data/database.dart';
 
 import 'package:full_body_routine/main.dart';
 
@@ -17,46 +18,34 @@ class _WorkoutPageState extends State<WorkoutPage> {
   @override
   Widget build(BuildContext context) {
     final _myBox = Hive.box('myBox');
+    ExerciseDataBase db = ExerciseDataBase();
+
     String currentDay = Provider.of<CurrentDay>(context).day;
     int currentWeek = Provider.of<CurrentWeek>(context).counter;
     if (_myBox.get('CurrentWeek') != null &&
         _myBox.get('CurrentWeek') != currentWeek) {
       currentWeek = _myBox.get('CurrentWeek');
     }
-    List<String> Col_1 = Provider.of<ProfileInfo>(context).workoutExcises;
-    List<String> Col_2 = Provider.of<ProfileInfo>(context).Col_2();
-    List<String> Col_3 = [
-      'Sets',
-      '3',
-      '3',
-      '3',
-      '2',
-      '2',
-      '3',
-      '3',
-      '3',
-      '3',
-      '2',
-      '2'
-    ];
-    List<String> Col_4 = [
-      'Repeats',
-      '12',
-      '12',
-      '12',
-      '12',
-      '20',
-      '12',
-      '12',
-      '8',
-      '12',
-      '12',
-      '12',
-      '12'
-    ];
+    if (_myBox.get("EXERCISELIST") == null) {
+      db.createInitialData();
+    } else {
+      // there already exists data
+      db.loadData();
+    }
+    List<String> Col_1 = [];
+    List<String> Col_2 = [];
+    List<String> hardDay = [];
+    List<String> Col_3 = [];
+    List<String> Col_4 = [];
+    for (var i = 0; i < db.toDoList.length; i++) {
+      Col_1.add(db.toDoList[i][0]);
+      Col_2.add(db.toDoList[i][1]);
+      Col_3.add('3');
+      Col_4.add('12');
+      hardDay.add(db.toDoList[i][2]);
+    }
     int cycle = 1;
     int quarter = currentWeek % 4;
-    List hardIndex = [];
     List<Excise> excises = [];
 
     if (currentWeek >= 4) {
@@ -66,51 +55,38 @@ class _WorkoutPageState extends State<WorkoutPage> {
       quarter = 4;
       cycle = (currentWeek ~/ 4);
     }
-
-    if (currentDay == 'Tuesday') {
-      hardIndex.addAll([7, 8, 10]);
-    }
-
-    if (currentDay == 'Thursday') {
-      hardIndex.addAll([1, 2, 3, 4]);
-    }
-
-    if (currentDay == 'Saturday') {
-      hardIndex.addAll([5, 6, 9, 11]);
-    }
-
-    for (var i = 0; i < hardIndex.length; i++) {
-      if (hardIndex[i] == 8 || hardIndex[i] == 11) {
-        Col_2[hardIndex[i]] = (int.parse(Col_2[hardIndex[i]]) +
-                int.parse(Col_2[hardIndex[i]]) * .025 * cycle
-            //  + int.parse(Col_2[hardIndex[i]]) * .1
-            )
+    for (var i = 0; i < db.toDoList.length; i++) {
+      if (currentDay == db.toDoList[i][2]) {
+        Col_2[i] = (int.parse(Col_2[i]) +
+                int.parse(Col_2[i]) * .05 * cycle +
+                int.parse(Col_2[i]) * .2)
             .floor()
             .toString();
-      } else {
-        Col_2[hardIndex[i]] = (int.parse(Col_2[hardIndex[i]]) +
-                int.parse(Col_2[hardIndex[i]]) * .05 * cycle +
-                int.parse(Col_2[hardIndex[i]]) * .2)
-            .floor()
-            .toString();
-      }
-      if (quarter == 1) {
-        Col_3[hardIndex[i]] = '6';
-        Col_4[hardIndex[i]] = '2';
-      }
-      if (quarter == 2) {
-        Col_3[hardIndex[i]] = '4';
-        Col_4[hardIndex[i]] = '3';
-      }
-      if (quarter == 3) {
-        Col_3[hardIndex[i]] = '3';
-        Col_4[hardIndex[i]] = '4';
-      }
-      if (quarter == 4) {
-        Col_3[hardIndex[i]] = '2';
-        Col_4[hardIndex[i]] = '6';
+        if (quarter == 1) {
+          Col_3[i] = '6';
+          Col_4[i] = '2';
+        }
+        if (quarter == 2) {
+          Col_3[i] = '4';
+          Col_4[i] = '3';
+        }
+        if (quarter == 3) {
+          Col_3[i] = '3';
+          Col_4[i] = '4';
+        }
+        if (quarter == 4) {
+          Col_3[i] = '2';
+          Col_4[i] = '6';
+        }
       }
     }
+
+    Col_1.insert(0, "Упражнение");
+    Col_2.insert(0, "Вес, кг");
+    Col_3.insert(0, "Sets");
+    Col_4.insert(0, "Repeats");
+    hardDay.insert(0, "Вторник");
+
     for (var i = 0; i < Col_1.length; i++) {
       excises.add(Excise(
         index: i,
@@ -118,40 +94,24 @@ class _WorkoutPageState extends State<WorkoutPage> {
         weight: Col_2[i],
         sets: Col_3[i],
         repeats: Col_4[i],
+        hardDay: hardDay[i],
       ));
     }
+
     @override
     initState() {
       super.initState();
     }
 
-    getColors(String title) {
-      if (title == 'Exercise') {
+    getColors(Excise item) {
+      if (item.title == 'Упражнение') {
         return Colors.grey[500];
       }
 
-      if (currentDay == 'Tuesday' &&
-          (title == 'Pull ups Lower Block' ||
-              title == 'Pull ups' ||
-              title == 'Biceps')) {
+      if (currentDay == item.hardDay) {
         return Colors.orangeAccent;
       }
 
-      if (currentDay == 'Thursday' &&
-          (title == 'Squad' ||
-              title == 'Bringing Leg' ||
-              title == 'Good Morning' ||
-              title == 'Shoulders')) {
-        return Colors.orangeAccent;
-      }
-
-      if (currentDay == 'Saturday' &&
-          (title == 'Abs' ||
-              title == 'Calf' ||
-              title == 'Triceps' ||
-              title == 'Hug')) {
-        return Colors.orangeAccent;
-      }
       return Colors.lightBlueAccent;
     }
 
@@ -159,7 +119,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       return TableRow(
           key: ValueKey(item.index),
           decoration: BoxDecoration(
-            color: getColors(item.title),
+            color: getColors(item),
           ),
           children: [
             TableCell(

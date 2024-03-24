@@ -21,9 +21,9 @@ class _WeekPageState extends State<WeekPage> {
   initState() {
     super.initState();
     workoutWeek.addAll([
-      'Tuesday',
-      'Thursday',
-      'Saturday',
+      'Вторник',
+      'Четверг',
+      'Суббота',
     ]);
   }
 

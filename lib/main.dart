@@ -4,9 +4,10 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:full_body_routine/pages/week.dart';
+// import 'package:full_body_routine/pages/oldWorkout.dart';
 import 'package:full_body_routine/pages/workout.dart';
 import 'package:full_body_routine/pages/profile.dart';
-// import 'package:full_body_routine/pages/settings.dart';
+import 'package:full_body_routine/pages/settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => ProfileInfo()),
         ChangeNotifierProvider(create: (context) => CurrentWeek()),
         ChangeNotifierProvider(create: (context) => CurrentDay()),
+        ChangeNotifierProvider(create: (context) => DropDownState()),
       ],
       child: MaterialApp(
         title: 'Full Body Routine',
@@ -30,7 +32,7 @@ void main() async {
         routes: {
           '/': (context) => const WeekPage(),
           '/workout': (context) => const WorkoutPage(),
-          '/profile': (context) => const ProfilePage(),
+          '/profile': (context) => const SettingsPage(),
           // '/settings': (context) => const SettingsPage(),
         },
       )));
@@ -127,6 +129,7 @@ class Excise {
   int index;
   String sets;
   String repeats;
+  String hardDay;
 
   Excise({
     this.index = 0,
@@ -134,6 +137,7 @@ class Excise {
     this.weight = '0',
     this.sets = '0',
     this.repeats = '0',
+    this.hardDay = 'Вторник',
   });
 }
 
@@ -158,6 +162,15 @@ class CurrentWeek extends ChangeNotifier {
     }
     counter--;
     _myBox.put('CurrentWeek', counter);
+    notifyListeners();
+  }
+}
+
+class DropDownState extends ChangeNotifier {
+  String day = 'chete';
+
+  void setDay(val) {
+    day = val;
     notifyListeners();
   }
 }

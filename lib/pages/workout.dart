@@ -57,11 +57,19 @@ class _WorkoutPageState extends State<WorkoutPage> {
     }
     for (var i = 0; i < db.toDoList.length; i++) {
       if (currentDay == db.toDoList[i][2]) {
-        Col_2[i] = (int.parse(Col_2[i]) +
-                int.parse(Col_2[i]) * .05 * cycle +
-                int.parse(Col_2[i]) * .2)
-            .floor()
-            .toString();
+        if (Col_2[i] == '80') {
+          Col_2[i] = (int.parse(Col_2[i]) + int.parse(Col_2[i]) * .025 * cycle
+              //  + int.parse(Col_2[i]) * .1
+              )
+              .floor()
+              .toString();
+        } else {
+          Col_2[i] = (int.parse(Col_2[i]) +
+                  int.parse(Col_2[i]) * .05 * cycle +
+                  int.parse(Col_2[i]) * .2)
+              .floor()
+              .toString();
+        }
         if (quarter == 1) {
           Col_3[i] = '6';
           Col_4[i] = '2';

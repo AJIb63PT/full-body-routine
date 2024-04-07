@@ -58,9 +58,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
     for (var i = 0; i < db.toDoList.length; i++) {
       if (currentDay == db.toDoList[i][2]) {
         if (Col_2[i] == '80') {
-          Col_2[i] = (int.parse(Col_2[i]) + int.parse(Col_2[i]) * .025 * cycle
-              //  + int.parse(Col_2[i]) * .1
-              )
+          Col_2[i] = (int.parse(Col_2[i]) +
+                  int.parse(Col_2[i]) * .025 * cycle +
+                  int.parse(Col_2[i]) * .05)
               .floor()
               .toString();
         } else {
@@ -113,14 +113,19 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
     getColors(Excise item) {
       if (item.title == 'Упражнение') {
-        return Colors.grey[500];
+        return const Color.fromARGB(255, 132, 90, 198);
       }
-
       if (currentDay == item.hardDay) {
-        return Colors.orangeAccent;
+        return const Color.fromARGB(255, 148, 104, 203);
       }
+      return const Color.fromARGB(255, 243, 225, 255);
+    }
 
-      return Colors.lightBlueAccent;
+    getTextStyleColors(Excise item) {
+      if (item.title == 'Упражнение') {
+        return const TextStyle(fontWeight: FontWeight.bold);
+      }
+      return const TextStyle(fontWeight: FontWeight.normal);
     }
 
     TableRow buildTableRow(Excise item) {
@@ -134,28 +139,40 @@ class _WorkoutPageState extends State<WorkoutPage> {
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(
                 padding: const EdgeInsets.all(5),
-                child: Text(item.title),
+                child: Text(
+                  item.title,
+                  style: getTextStyleColors(item),
+                ),
               ),
             ),
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(
                 padding: const EdgeInsets.all(5),
-                child: Text(item.weight),
+                child: Text(
+                  item.weight,
+                  style: getTextStyleColors(item),
+                ),
               ),
             ),
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(
                 padding: const EdgeInsets.all(5),
-                child: Text(item.sets),
+                child: Text(
+                  item.sets,
+                  style: getTextStyleColors(item),
+                ),
               ),
             ),
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(
                 padding: const EdgeInsets.all(5),
-                child: Text(item.repeats),
+                child: Text(
+                  item.repeats,
+                  style: getTextStyleColors(item),
+                ),
               ),
             ),
           ]);

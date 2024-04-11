@@ -51,20 +51,17 @@ class DialogBox extends StatelessWidget {
                 const SizedBox(width: 120, child: MyDropDown()),
               ],
             ),
-            // buttons -> save + cancel
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                // cancel button
+                MyButton(text: "Отмена", onPressed: onCancel),
+                const SizedBox(width: 8),
                 // save button
                 MyButton(
                   text: "Сохранить",
                   onPressed: onSave,
                 ),
-
-                const SizedBox(width: 8),
-
-                // cancel button
-                MyButton(text: "Отмена", onPressed: onCancel),
               ],
             ),
           ],

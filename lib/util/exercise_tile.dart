@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ExerciseTile extends StatelessWidget {
-  final dynamic taskName;
+  final dynamic exerciseName;
   final dynamic weight;
   final dynamic day;
-  // dynamic onChanged;
+  final dynamic onChanged;
   final Function(BuildContext)? deleteFunction;
 
   const ExerciseTile({
     required super.key,
-    required this.taskName,
+    required this.exerciseName,
     required this.weight,
     required this.day,
-
-    // required this.onChanged,
+    required this.onChanged,
     required this.deleteFunction,
   });
 
@@ -47,13 +46,15 @@ class ExerciseTile extends StatelessWidget {
                     SizedBox(
                         width: 250,
                         child: ListTile(
-                          title: Text('${taskName}: ${weight} кг'),
+                          title: Text('$exerciseName: $weight кг'),
                           subtitle: Text(day.toString()),
                         )),
                     const SizedBox(width: 8),
                     const SizedBox(width: 20, child: Icon(Icons.menu)),
                   ])),
-              // onTap: () {},
+              onTap: () {
+                onChanged(context);
+              },
             )),
       ),
     );

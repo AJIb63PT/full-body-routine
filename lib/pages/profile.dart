@@ -15,6 +15,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final _myBox = Hive.box('myBox');
+  final _controllerE = TextEditingController();
+  final _controllerW = TextEditingController();
   ExerciseDataBase db = ExerciseDataBase();
 
   @override
@@ -28,18 +30,41 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
-  final _controllerE = TextEditingController();
-  final _controllerW = TextEditingController();
-//
-  // checkbox was tapped
-  checkBoxChanged(int index) {
-    setState(() {
-      db.toDoList[index][1] = !db.toDoList[index][1];
-    });
-    db.updateDataBase();
+  onTapBox(int index) {
+    final controllerE = TextEditingController(text: db.toDoList[index][0]);
+    final controllerW = TextEditingController(text: db.toDoList[index][1]);
+    Provider.of<DropDownState>(context, listen: false)
+        .setDay(db.toDoList[index][2]);
+    changeExercise(int index) {
+      String hardDay = Provider.of<DropDownState>(context, listen: false).day;
+
+      setState(() {
+        db.toDoList[index] = [
+          controllerE.text,
+          controllerW.text,
+          hardDay,
+        ];
+        controllerE.clear();
+        controllerW.clear();
+      });
+      Navigator.of(context).pop();
+      db.updateDataBase();
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DialogBox(
+          controllerE: controllerE,
+          controllerW: controllerW,
+          onSave: () => changeExercise(index),
+          onCancel: () => Navigator.of(context).pop(),
+        );
+      },
+    );
   }
 
-  saveNewTask() {
+  saveNewExercise() {
     String hardDay = Provider.of<DropDownState>(context, listen: false).day;
     setState(() {
       db.toDoList.add([
@@ -54,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
     db.updateDataBase();
   }
 
-  void createNewTask() {
+  void createNewExercise() {
     Provider.of<DropDownState>(context, listen: false).setDay('Вторник');
     showDialog(
       context: context,
@@ -62,14 +87,14 @@ class _ProfilePageState extends State<ProfilePage> {
         return DialogBox(
           controllerE: _controllerE,
           controllerW: _controllerW,
-          onSave: saveNewTask,
+          onSave: saveNewExercise,
           onCancel: () => Navigator.of(context).pop(),
         );
       },
     );
   }
 
-  void deleteTask(int index) {
+  void deleteExercise(int index) {
     setState(() {
       db.toDoList.removeAt(index);
     });
@@ -80,11 +105,11 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Упражнения'),
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: createNewTask,
+        onPressed: createNewExercise,
         child: const Icon(Icons.add),
       ),
       body: ReorderableListView(
@@ -93,12 +118,12 @@ class _ProfilePageState extends State<ProfilePage> {
           List<String> val = item.value;
 
           return ExerciseTile(
-            taskName: val[0],
+            exerciseName: val[0],
             weight: val[1],
             day: val[2],
-            key: Key("${val}"),
-            // onChanged: (value) => checkBoxChanged(index),
-            deleteFunction: (context) => deleteTask(idx),
+            key: Key("$idx"),
+            onChanged: (value) => onTapBox(idx),
+            deleteFunction: (context) => deleteExercise(idx),
           );
         }).toList(),
         onReorder: (int start, int current) {
@@ -127,18 +152,6 @@ class _ProfilePageState extends State<ProfilePage> {
           });
         },
       ),
-      // ListView.builder(
-      //   itemCount: db.toDoList.length,
-      //   itemBuilder: (context, index) {
-      //     return ExerciseTile(
-      //       taskName: db.toDoList[index][0],
-      //       weight: db.toDoList[index][1],
-      //       day: db.toDoList[index][2],
-      //       // onChanged: (value) => checkBoxChanged(index),
-      //       deleteFunction: (context) => deleteTask(index),
-      //     );
-      //   },
-      // ),
     );
   }
 }

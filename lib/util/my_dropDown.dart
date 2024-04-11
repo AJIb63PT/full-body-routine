@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
 
-/// Flutter code sample for [DropdownButton].
 class ListItem {
   String label;
   int id;
@@ -26,10 +25,10 @@ class MyDropDown extends StatefulWidget {
 }
 
 class _MyDropDownState extends State<MyDropDown> {
-  String dropdownValue = list.first;
-
   @override
   Widget build(BuildContext context) {
+    String dropdownValue =
+        Provider.of<DropDownState>(context, listen: false).day;
     return DropdownButton<String>(
       value: dropdownValue,
       icon: const Icon(Icons.arrow_downward),

@@ -97,7 +97,7 @@ class _WeekPageState extends State<WeekPage> {
                       '/workout',
                     );
                     Provider.of<CurrentDay>(context, listen: false)
-                        .setDay(workoutWeek[index]);
+                        .setCurrentDay(workoutWeek[index]);
                   },
                   child: Text(workoutWeek[index]));
             },

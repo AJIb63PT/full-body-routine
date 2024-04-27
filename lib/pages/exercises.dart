@@ -33,16 +33,31 @@ class _ExercisesPageState extends State<ExercisesPage> {
   onTapBox(int index) {
     final controllerE = TextEditingController(text: db.toDoList[index][0]);
     final controllerW = TextEditingController(text: db.toDoList[index][1]);
+
     Provider.of<DropDownState>(context, listen: false)
         .setDay(db.toDoList[index][2]);
+    Provider.of<BodyWeightToggleState>(context, listen: false)
+        .setValue(bool.parse(db.toDoList[index][3]));
+
     changeExercise(int index) {
       String hardDay = Provider.of<DropDownState>(context, listen: false).day;
+      bool isBodyWeight = Provider.of<BodyWeightToggleState>(
+        context,
+      ).value;
+      String bodyWeight =
+          Provider.of<BodyWeightValue>(context, listen: false).value;
+      if (_myBox.get('BodyWeight') != null &&
+          _myBox.get('BodyWeight') != bodyWeight) {
+        bodyWeight = _myBox.get('BodyWeight');
+      }
+      String weight = isBodyWeight ? bodyWeight : controllerW.text;
 
       setState(() {
         db.toDoList[index] = [
           controllerE.text,
-          controllerW.text,
+          weight,
           hardDay,
+          isBodyWeight.toString()
         ];
         controllerE.clear();
         controllerW.clear();
@@ -66,12 +81,19 @@ class _ExercisesPageState extends State<ExercisesPage> {
 
   saveNewExercise() {
     String hardDay = Provider.of<DropDownState>(context, listen: false).day;
+    bool isBodyWeight =
+        Provider.of<BodyWeightToggleState>(context, listen: false).value;
+    String bodyWeight =
+        Provider.of<BodyWeightValue>(context, listen: false).value;
+    if (_myBox.get('BodyWeight') != null &&
+        _myBox.get('BodyWeight') != bodyWeight) {
+      bodyWeight = _myBox.get('BodyWeight');
+    }
+    String weight = isBodyWeight ? bodyWeight : _controllerW.text;
+
     setState(() {
-      db.toDoList.add([
-        _controllerE.text,
-        _controllerW.text,
-        hardDay,
-      ]);
+      db.toDoList
+          .add([_controllerE.text, weight, hardDay, isBodyWeight.toString()]);
       _controllerE.clear();
       _controllerW.clear();
     });
@@ -81,6 +103,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
 
   void createNewExercise() {
     Provider.of<DropDownState>(context, listen: false).setDay('Вторник');
+    Provider.of<BodyWeightToggleState>(context, listen: false).setValue(false);
     showDialog(
       context: context,
       builder: (context) {

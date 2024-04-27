@@ -35,6 +35,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     List<String> Col_1 = [];
     List<String> Col_2 = [];
     List<String> hardDay = [];
+    List<String> isBWs = [];
     List<String> Col_3 = [];
     List<String> Col_4 = [];
     for (var i = 0; i < db.toDoList.length; i++) {
@@ -43,6 +44,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       Col_3.add('3');
       Col_4.add('12');
       hardDay.add(db.toDoList[i][2]);
+      isBWs.add(db.toDoList[i][3]);
     }
     int cycle = 1;
     int quarter = currentWeek % 4;
@@ -57,7 +59,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     }
     for (var i = 0; i < db.toDoList.length; i++) {
       if (currentDay == db.toDoList[i][2]) {
-        if (Col_2[i] == '80') {
+        if (bool.parse(isBWs[i])) {
           Col_2[i] = (int.parse(Col_2[i]) +
                   int.parse(Col_2[i]) * .025 * cycle +
                   int.parse(Col_2[i]) * .05)

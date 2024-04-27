@@ -15,11 +15,17 @@ class _MySwitchState extends State<MySwitch> {
     bool isBodyWeight =
         Provider.of<BodyWeightToggleState>(context, listen: false).value;
     return Row(children: [
-      const Text('Упражнение с весом тела'),
+      Text(
+        'Упражнение с весом тела',
+        style: TextStyle(
+            color: isBodyWeight
+                ? Colors.deepPurple
+                : Color.fromARGB(255, 148, 148, 148)),
+      ),
       const SizedBox(width: 8),
       Switch(
         value: isBodyWeight,
-        onChanged: (bool value) {
+        onChanged: (value) {
           setState(() {
             Provider.of<BodyWeightToggleState>(context, listen: false)
                 .setValue(value);

@@ -15,17 +15,28 @@ class ProfileInfoPage extends StatefulWidget {
 
 class _ProfileInfoPageState extends State<ProfileInfoPage> {
   final _myBox = Hive.box('myBox');
-  final _controllerE = TextEditingController();
-  final _controllerW = TextEditingController();
   ExerciseDataBase db = ExerciseDataBase();
 
   @override
   void initState() {
+    if (_myBox.get("EXERCISELIST") == null) {
+      db.createInitialData();
+    } else {
+      db.loadData();
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    String bodyWeight = Provider.of<BodyWeightValue>(
+      context,
+    ).value;
+    if (_myBox.get('BodyWeight') != null &&
+        _myBox.get('BodyWeight') != bodyWeight) {
+      bodyWeight = _myBox.get('BodyWeight');
+    }
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -34,16 +45,26 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
         body: InkWell(
           child: Container(
               padding: const EdgeInsets.all(5),
-              child: const Row(children: [
+              child: Row(children: [
                 SizedBox(
                     width: 250,
                     child: ListTile(
-                      title: Text('asd кг'),
-                      subtitle: Text('1231'),
+                      title: const Text('Вес тела, кг'),
+                      subtitle: Text(bodyWeight),
                     )),
-                SizedBox(width: 8),
               ])),
-          onTap: () {},
+          onTap: () {
+            Provider.of<BodyWeightValue>(context, listen: false)
+                .setBodyWeight('82');
+            for (var i = 0; i < db.toDoList.length; i++) {
+              if (db.toDoList[i][3] == 'true') {
+                db.toDoList[i][1] =
+                    Provider.of<BodyWeightValue>(context, listen: false).value;
+              }
+            }
+
+            db.updateDataBase();
+          },
         ));
   }
 }

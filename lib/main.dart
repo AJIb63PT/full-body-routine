@@ -20,6 +20,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => CurrentDay()),
         ChangeNotifierProvider(create: (context) => DropDownState()),
         ChangeNotifierProvider(create: (context) => BodyWeightToggleState()),
+        ChangeNotifierProvider(create: (context) => BodyWeightValue()),
       ],
       child: MaterialApp(
         title: 'Full Body Routine',
@@ -92,8 +93,22 @@ class DropDownState extends ChangeNotifier {
 class BodyWeightToggleState extends ChangeNotifier {
   bool value = false;
 
-  void setValue(val) {
+  void setValue(bool val) {
     value = val;
+    notifyListeners();
+  }
+}
+
+class BodyWeightValue extends ChangeNotifier {
+  final _myBox = Hive.box('myBox');
+  String value = '80';
+  void setBodyWeight(val) {
+    if (_myBox.get('BodyWeight') != null && _myBox.get('BodyWeight') != value) {
+      value = _myBox.get('BodyWeight');
+    }
+    value = val;
+    _myBox.put('BodyWeight', value);
+
     notifyListeners();
   }
 }
@@ -101,7 +116,7 @@ class BodyWeightToggleState extends ChangeNotifier {
 class CurrentDay extends ChangeNotifier {
   String day = '';
 
-  void setDay(val) {
+  void setCurrentDay(val) {
     day = val;
     notifyListeners();
   }

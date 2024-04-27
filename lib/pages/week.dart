@@ -36,81 +36,93 @@ class _WeekPageState extends State<WeekPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Тренировочная неделя'),
-      ),
-      body: Column(children: [
-        Container(
-          padding: const EdgeInsets.all(32),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        'Текущая неделя $counter',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text('Тренировочная неделя'),
+        ),
+        body: Column(children: [
+          Container(
+            padding: const EdgeInsets.all(32),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          'Текущая неделя $counter',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              IconButton(
-                  onPressed: counter == 1
-                      ? null
-                      : () {
-                          Provider.of<CurrentWeek>(context, listen: false)
-                              .minusCounter();
-                        },
-                  icon: Icon(
-                    Icons.remove,
-                    color: counter == 1
-                        ? const Color.fromARGB(100, 255, 161, 172)
-                        : Colors.red[500],
-                  )),
-              IconButton(
-                  onPressed: () {
-                    Provider.of<CurrentWeek>(context, listen: false)
-                        .addCounter();
-                  },
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.green[500],
-                  )),
-            ],
+                IconButton(
+                    onPressed: counter == 1
+                        ? null
+                        : () {
+                            Provider.of<CurrentWeek>(context, listen: false)
+                                .minusCounter();
+                          },
+                    icon: Icon(
+                      Icons.remove,
+                      color: counter == 1
+                          ? const Color.fromARGB(100, 255, 161, 172)
+                          : Colors.red[500],
+                    )),
+                IconButton(
+                    onPressed: () {
+                      Provider.of<CurrentWeek>(context, listen: false)
+                          .addCounter();
+                    },
+                    icon: Icon(
+                      Icons.add,
+                      color: Colors.green[500],
+                    )),
+              ],
+            ),
           ),
-        ),
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/workout',
-                  );
-                  Provider.of<CurrentDay>(context, listen: false)
-                      .setDay(workoutWeek[index]);
-                },
-                child: Text(workoutWeek[index]));
-          },
-          itemCount: workoutWeek.length,
-        )
-      ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/profile');
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.person),
-      ),
-    );
+          ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/workout',
+                    );
+                    Provider.of<CurrentDay>(context, listen: false)
+                        .setDay(workoutWeek[index]);
+                  },
+                  child: Text(workoutWeek[index]));
+            },
+            itemCount: workoutWeek.length,
+          )
+        ]),
+        floatingActionButton:
+            Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+          FloatingActionButton(
+            child: Icon(Icons.fitness_center),
+            onPressed: () {
+              Navigator.pushNamed(context, '/exercises');
+            },
+            heroTag: null,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          FloatingActionButton(
+            child: Icon(Icons.person),
+            onPressed: () {
+              Navigator.pushNamed(context, '/info');
+            },
+            heroTag: null,
+          )
+        ]));
   }
 }

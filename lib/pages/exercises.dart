@@ -6,14 +6,14 @@ import '../util/exercise_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ExercisesPage extends StatefulWidget {
+  const ExercisesPage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ExercisesPage> createState() => _ExercisesPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ExercisesPageState extends State<ExercisesPage> {
   final _myBox = Hive.box('myBox');
   final _controllerE = TextEditingController();
   final _controllerW = TextEditingController();

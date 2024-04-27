@@ -2,15 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
 
-class ListItem {
-  String label;
-  int id;
-  ListItem({
-    required this.label,
-    required this.id,
-  });
-}
-
 List<String> list = <String>[
   'Вторник',
   'Четверг',
@@ -39,11 +30,8 @@ class _MyDropDownState extends State<MyDropDown> {
         color: Colors.deepPurpleAccent,
       ),
       onChanged: (String? value) {
-        // This is called when the user selects an item.
         setState(() {
-          dropdownValue = value!;
-          Provider.of<DropDownState>(context, listen: false)
-              .setDay(dropdownValue);
+          Provider.of<DropDownState>(context, listen: false).setDay(value);
         });
       },
       items: list.map<DropdownMenuItem<String>>((String value) {

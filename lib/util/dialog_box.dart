@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:full_body_routine/util/my_switch.dart';
+import 'package:provider/provider.dart';
+import 'package:full_body_routine/main.dart';
 import 'my_button.dart';
 import 'my_dropDown.dart';
 
@@ -36,21 +38,31 @@ class DialogBox extends StatelessWidget {
               ),
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                    width: 120,
-                    child: TextField(
-                      controller: controllerW,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Вес",
-                      ),
-                    )),
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                          width: 120,
+                          child: TextField(
+                            enabled: !Provider.of<BodyWeightToggleState>(
+                              context,
+                            ).value,
+                            controller: controllerW,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: "Вес",
+                            ),
+                          )),
+                    ]),
                 const SizedBox(width: 8),
                 const SizedBox(width: 120, child: MyDropDown()),
               ],
             ),
+            const MySwitch(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

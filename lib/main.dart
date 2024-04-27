@@ -5,7 +5,8 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:full_body_routine/pages/week.dart';
 import 'package:full_body_routine/pages/workout.dart';
-import 'package:full_body_routine/pages/profile.dart';
+import 'package:full_body_routine/pages/exercises.dart';
+import 'package:full_body_routine/pages/profileInfo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => CurrentWeek()),
         ChangeNotifierProvider(create: (context) => CurrentDay()),
         ChangeNotifierProvider(create: (context) => DropDownState()),
+        ChangeNotifierProvider(create: (context) => BodyWeightToggleState()),
       ],
       child: MaterialApp(
         title: 'Full Body Routine',
@@ -29,7 +31,8 @@ void main() async {
         routes: {
           '/': (context) => const WeekPage(),
           '/workout': (context) => const WorkoutPage(),
-          '/profile': (context) => const ProfilePage(),
+          '/exercises': (context) => const ExercisesPage(),
+          '/info': (context) => const ProfileInfoPage(),
         },
       )));
 }
@@ -82,6 +85,15 @@ class DropDownState extends ChangeNotifier {
 
   void setDay(val) {
     day = val;
+    notifyListeners();
+  }
+}
+
+class BodyWeightToggleState extends ChangeNotifier {
+  bool value = false;
+
+  void setValue(val) {
+    value = val;
     notifyListeners();
   }
 }

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import '../data/database.dart';
-import '../util/dialog_box.dart';
-import '../util/exercise_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
 
@@ -20,7 +18,7 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
 
   @override
   void initState() {
-    if (_myBox.get("EXERCISELIST") == null) {
+    if (_myBox.get("EXERCISES_LIST") == null) {
       db.createInitialData();
     } else {
       db.loadData();

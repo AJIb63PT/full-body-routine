@@ -26,23 +26,23 @@ class _WorkoutPageState extends State<WorkoutPage> {
         _myBox.get('CurrentWeek') != currentWeek) {
       currentWeek = _myBox.get('CurrentWeek');
     }
-    if (_myBox.get("EXERCISELIST") == null) {
+    if (_myBox.get("EXERCISES_LIST") == null) {
       db.createInitialData();
     } else {
       // there already exists data
       db.loadData();
     }
-    List<String> Col_1 = [];
-    List<String> Col_2 = [];
+    List<String> col_1 = [];
+    List<String> col_2 = [];
     List<String> hardDay = [];
     List<String> isBWs = [];
-    List<String> Col_3 = [];
-    List<String> Col_4 = [];
+    List<String> col_3 = [];
+    List<String> col_4 = [];
     for (var i = 0; i < db.toDoList.length; i++) {
-      Col_1.add(db.toDoList[i][0]);
-      Col_2.add(db.toDoList[i][1]);
-      Col_3.add('3');
-      Col_4.add('12');
+      col_1.add(db.toDoList[i][0]);
+      col_2.add(db.toDoList[i][1]);
+      col_3.add('3');
+      col_4.add('12');
       hardDay.add(db.toDoList[i][2]);
       isBWs.add(db.toDoList[i][3]);
     }
@@ -60,58 +60,58 @@ class _WorkoutPageState extends State<WorkoutPage> {
     for (var i = 0; i < db.toDoList.length; i++) {
       if (currentDay == db.toDoList[i][2]) {
         if (bool.parse(isBWs[i])) {
-          Col_2[i] = (double.parse(Col_2[i]) +
-                  double.parse(Col_2[i]) * .025 * cycle +
-                  double.parse(Col_2[i]) * .05)
+          col_2[i] = (double.parse(col_2[i]) +
+                  double.parse(col_2[i]) * .025 * cycle +
+                  double.parse(col_2[i]) * .05)
               .floor()
               .toString();
         } else {
-          Col_2[i] = (double.parse(Col_2[i]) +
-                  double.parse(Col_2[i]) * .05 * cycle +
-                  double.parse(Col_2[i]) * .2)
+          col_2[i] = (double.parse(col_2[i]) +
+                  double.parse(col_2[i]) * .05 * cycle +
+                  double.parse(col_2[i]) * .2)
               .floor()
               .toString();
         }
         if (quarter == 1) {
-          Col_3[i] = '6';
-          Col_4[i] = '2';
+          col_3[i] = '6';
+          col_4[i] = '2';
         }
         if (quarter == 2) {
-          Col_3[i] = '4';
-          Col_4[i] = '3';
+          col_3[i] = '4';
+          col_4[i] = '3';
         }
         if (quarter == 3) {
-          Col_3[i] = '3';
-          Col_4[i] = '4';
+          col_3[i] = '3';
+          col_4[i] = '4';
         }
         if (quarter == 4) {
-          Col_3[i] = '2';
-          Col_4[i] = '6';
+          col_3[i] = '2';
+          col_4[i] = '6';
         }
       }
     }
 
-    Col_1.insert(0, "Упражнение");
-    Col_2.insert(0, "Вес, кг");
-    Col_3.insert(0, "Подход");
-    Col_4.insert(0, "Повтор-ие");
+    col_1.insert(0, "Упражнение");
+    col_2.insert(0, "Вес, кг");
+    col_3.insert(0, "Подход");
+    col_4.insert(0, "Повтор-ие");
     hardDay.insert(0, "Вторник");
 
-    for (var i = 0; i < Col_1.length; i++) {
+    for (var i = 0; i < col_1.length; i++) {
       excises.add(Excise(
         index: i,
-        title: Col_1[i],
-        weight: Col_2[i],
-        sets: Col_3[i],
-        repeats: Col_4[i],
+        title: col_1[i],
+        weight: col_2[i],
+        sets: col_3[i],
+        repeats: col_4[i],
         hardDay: hardDay[i],
       ));
     }
 
-    @override
-    initState() {
-      super.initState();
-    }
+    // @override
+    // initState() {
+    //   super.initState();
+    // }
 
     getColors(Excise item) {
       if (item.title == 'Упражнение') {

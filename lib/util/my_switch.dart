@@ -20,7 +20,7 @@ class _MySwitchState extends State<MySwitch> {
         style: TextStyle(
             color: isBodyWeight
                 ? Colors.deepPurple
-                : Color.fromARGB(255, 148, 148, 148)),
+                : const Color.fromARGB(255, 148, 148, 148)),
       ),
       const SizedBox(width: 8),
       Switch(

@@ -107,21 +107,21 @@ class _WeekPageState extends State<WeekPage> {
         floatingActionButton:
             Column(mainAxisAlignment: MainAxisAlignment.end, children: [
           FloatingActionButton(
-            child: Icon(Icons.fitness_center),
             onPressed: () {
               Navigator.pushNamed(context, '/exercises');
             },
             heroTag: null,
+            child: const Icon(Icons.fitness_center),
           ),
           const SizedBox(
             height: 10,
           ),
           FloatingActionButton(
-            child: Icon(Icons.person),
             onPressed: () {
               Navigator.pushNamed(context, '/info');
             },
             heroTag: null,
+            child: const Icon(Icons.person),
           )
         ]));
   }

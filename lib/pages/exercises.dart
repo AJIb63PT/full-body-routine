@@ -21,7 +21,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
 
   @override
   void initState() {
-    if (_myBox.get("EXERCISELIST") == null) {
+    if (_myBox.get("EXERCISES_LIST") == null) {
       db.createInitialData();
     } else {
       db.loadData();

@@ -4,7 +4,7 @@ import 'package:full_body_routine/util/my_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
 import 'my_button.dart';
-import 'my_dropDown.dart';
+import 'my_dropdown.dart';
 
 class DialogBox extends StatelessWidget {
   final TextEditingController controllerE;
@@ -25,7 +25,7 @@ class DialogBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.deepPurple[100],
-      content: Container(
+      content: SizedBox(
         height: 320,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

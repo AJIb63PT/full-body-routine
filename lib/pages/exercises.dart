@@ -41,9 +41,8 @@ class _ExercisesPageState extends State<ExercisesPage> {
 
     changeExercise(int index) {
       String hardDay = Provider.of<DropDownState>(context, listen: false).day;
-      bool isBodyWeight = Provider.of<BodyWeightToggleState>(
-        context,
-      ).value;
+      bool isBodyWeight =
+          Provider.of<BodyWeightToggleState>(context, listen: false).value;
       String bodyWeight =
           Provider.of<BodyWeightValue>(context, listen: false).value;
       if (_myBox.get('BodyWeight') != null &&

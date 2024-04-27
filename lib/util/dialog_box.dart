@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:full_body_routine/util/my_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
@@ -52,6 +53,10 @@ class DialogBox extends StatelessWidget {
                             ).value,
                             controller: controllerW,
                             keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp('[0-9.]+'))
+                            ],
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: "Вес",

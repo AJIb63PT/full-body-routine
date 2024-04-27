@@ -60,15 +60,15 @@ class _WorkoutPageState extends State<WorkoutPage> {
     for (var i = 0; i < db.toDoList.length; i++) {
       if (currentDay == db.toDoList[i][2]) {
         if (bool.parse(isBWs[i])) {
-          Col_2[i] = (int.parse(Col_2[i]) +
-                  int.parse(Col_2[i]) * .025 * cycle +
-                  int.parse(Col_2[i]) * .05)
+          Col_2[i] = (double.parse(Col_2[i]) +
+                  double.parse(Col_2[i]) * .025 * cycle +
+                  double.parse(Col_2[i]) * .05)
               .floor()
               .toString();
         } else {
-          Col_2[i] = (int.parse(Col_2[i]) +
-                  int.parse(Col_2[i]) * .05 * cycle +
-                  int.parse(Col_2[i]) * .2)
+          Col_2[i] = (double.parse(Col_2[i]) +
+                  double.parse(Col_2[i]) * .05 * cycle +
+                  double.parse(Col_2[i]) * .2)
               .floor()
               .toString();
         }

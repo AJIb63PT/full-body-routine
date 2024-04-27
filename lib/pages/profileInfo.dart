@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import '../data/database.dart';
 import '../util/dialog_box.dart';
@@ -54,17 +55,65 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
                     )),
               ])),
           onTap: () {
-            Provider.of<BodyWeightValue>(context, listen: false)
-                .setBodyWeight('82');
-            for (var i = 0; i < db.toDoList.length; i++) {
-              if (db.toDoList[i][3] == 'true') {
-                db.toDoList[i][1] =
-                    Provider.of<BodyWeightValue>(context, listen: false).value;
-              }
-            }
-
-            db.updateDataBase();
+            _dialogBuilder(context);
           },
         ));
+  }
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    String inputValue = '';
+    Function setWeight =
+        Provider.of<BodyWeightValue>(context, listen: false).setBodyWeight;
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(' Новый Вес тела'),
+          content: TextFormField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp('[0-9.]+'))
+            ],
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'кг',
+            ),
+            onChanged: (text) {
+              inputValue = text;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Отмена'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Сохранить'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setWeight(inputValue);
+                for (var i = 0; i < db.toDoList.length; i++) {
+                  if (db.toDoList[i][3] == 'true') {
+                    db.toDoList[i][1] =
+                        Provider.of<BodyWeightValue>(context, listen: false)
+                            .value;
+                  }
+                }
+                db.updateDataBase();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

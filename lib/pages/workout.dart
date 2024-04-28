@@ -32,20 +32,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
     } else {
       db.loadData();
     }
-    List<String> col_1 = [];
-    List<String> col_2 = [];
-    List<String> hardDay = [];
-    List<String> isBWs = [];
-    List<String> col_3 = [];
-    List<String> col_4 = [];
-    for (var i = 0; i < db.toDoList.length; i++) {
-      col_1.add(db.toDoList[i][0]);
-      col_2.add(db.toDoList[i][1]);
-      col_3.add('3');
-      col_4.add('12');
-      hardDay.add(db.toDoList[i][2]);
-      isBWs.add(db.toDoList[i][3]);
-    }
+
+    List<String> col_1 = ["Упражнение"];
+    List<String> col_2 = ["Вес, кг"];
+    List<String> col_3 = ["Подход"];
+    List<String> col_4 = ["Повтор-ие"];
+    List<String> hardDay = ["Вторник"];
+
     int cycle = 1;
     int quinta = currentWeek % 5;
     List<Excise> excises = [];
@@ -57,56 +50,58 @@ class _WorkoutPageState extends State<WorkoutPage> {
       quinta = 5;
       cycle = (currentWeek ~/ 5);
     }
-    for (var i = 0; i < db.toDoList.length; i++) {
-      if (currentDay == db.toDoList[i][2]) {
-        if (bool.parse(isBWs[i])) {
-          col_2[i] = (double.parse(col_2[i]) +
-                  double.parse(col_2[i]) * .025 * cycle +
-                  double.parse(col_2[i]) * .05)
+    for (var i = 0; i < db.excisesList.length; i++) {
+      var j = i + 1;
+      var [title, weight, focusDay, isBW] = db.excisesList[i];
+
+      col_1.add(title);
+      col_3.add('3');
+      col_4.add('12');
+      hardDay.add(focusDay);
+
+      if (currentDay == focusDay) {
+        if (bool.parse(isBW)) {
+          col_2.add((double.parse(weight) +
+                  double.parse(weight) * .025 * cycle +
+                  double.parse(weight) * .05)
               .floor()
-              .toString();
+              .toString());
         } else {
-          col_2[i] = (double.parse(col_2[i]) +
-                  double.parse(col_2[i]) * .05 * cycle +
-                  double.parse(col_2[i]) * .2)
+          col_2.add((double.parse(weight) +
+                  double.parse(weight) * .05 * cycle +
+                  double.parse(weight) * .2)
               .floor()
-              .toString();
+              .toString());
         }
         if (quinta == 1) {
-          col_3[i] = '6';
-          col_4[i] = '2';
+          col_3[j] = '6';
+          col_4[j] = '2';
         }
         if (quinta == 2) {
-          col_3[i] = '4';
-          col_4[i] = '3';
+          col_3[j] = '4';
+          col_4[j] = '3';
         }
         if (quinta == 3) {
-          col_3[i] = '3';
-          col_4[i] = '4';
+          col_3[j] = '3';
+          col_4[j] = '4';
         }
         if (quinta == 4) {
-          col_3[i] = '2';
-          col_4[i] = '6';
+          col_3[j] = '2';
+          col_4[j] = '6';
         }
+      } else {
+        col_2.add(weight);
       }
 
       if (quinta == 5) {
-        if (bool.parse(isBWs[i])) {
-          col_4[i] = '6';
-          col_2[i] = db.toDoList[i][1];
+        if (bool.parse(isBW)) {
+          col_4[j] = '6';
+          col_2[j] = weight;
         } else {
-          col_2[i] = (double.parse(col_2[i]) * .5).floor().toString();
+          col_2[j] = (double.parse(weight) * .5).floor().toString();
         }
       }
-    }
 
-    col_1.insert(0, "Упражнение");
-    col_2.insert(0, "Вес, кг");
-    col_3.insert(0, "Подход");
-    col_4.insert(0, "Повтор-ие");
-    hardDay.insert(0, "Вторник");
-
-    for (var i = 0; i < col_1.length; i++) {
       excises.add(Excise(
         index: i,
         title: col_1[i],

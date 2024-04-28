@@ -31,13 +31,14 @@ class _ExercisesPageState extends State<ExercisesPage> {
   }
 
   onTapBox(int index) {
-    final controllerE = TextEditingController(text: db.toDoList[index][0]);
-    final controllerW = TextEditingController(text: db.toDoList[index][1]);
+    var [title, weight, focusDay, isBW] = db.excisesList[index];
 
-    Provider.of<DropDownState>(context, listen: false)
-        .setDay(db.toDoList[index][2]);
+    final controllerE = TextEditingController(text: title);
+    final controllerW = TextEditingController(text: weight);
+
+    Provider.of<DropDownState>(context, listen: false).setDay(focusDay);
     Provider.of<BodyWeightToggleState>(context, listen: false)
-        .setValue(bool.parse(db.toDoList[index][3]));
+        .setValue(bool.parse(isBW));
 
     changeExercise(int index) {
       String hardDay = Provider.of<DropDownState>(context, listen: false).day;
@@ -52,7 +53,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
       String weight = isBodyWeight ? bodyWeight : controllerW.text;
 
       setState(() {
-        db.toDoList[index] = [
+        db.excisesList[index] = [
           controllerE.text,
           weight,
           hardDay,
@@ -91,7 +92,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
     String weight = isBodyWeight ? bodyWeight : _controllerW.text;
 
     setState(() {
-      db.toDoList
+      db.excisesList
           .add([_controllerE.text, weight, hardDay, isBodyWeight.toString()]);
       _controllerE.clear();
       _controllerW.clear();
@@ -118,7 +119,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
 
   void deleteExercise(int index) {
     setState(() {
-      db.toDoList.removeAt(index);
+      db.excisesList.removeAt(index);
     });
     db.updateDataBase();
   }
@@ -135,7 +136,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
         child: const Icon(Icons.add),
       ),
       body: ReorderableListView(
-        children: db.toDoList.asMap().entries.map((item) {
+        children: db.excisesList.asMap().entries.map((item) {
           int idx = item.key;
           List<String> val = item.value;
 
@@ -152,22 +153,22 @@ class _ExercisesPageState extends State<ExercisesPage> {
           // dragging from top to bottom
           if (start < current) {
             int end = current - 1;
-            List<String> startItem = db.toDoList[start];
+            List<String> startItem = db.excisesList[start];
             int i = 0;
             int local = start;
             do {
-              db.toDoList[local] = db.toDoList[++local];
+              db.excisesList[local] = db.excisesList[++local];
               i++;
             } while (i < end - start);
-            db.toDoList[end] = startItem;
+            db.excisesList[end] = startItem;
           }
           // dragging from bottom to top
           else if (start > current) {
-            List<String> startItem = db.toDoList[start];
+            List<String> startItem = db.excisesList[start];
             for (int i = start; i > current; i--) {
-              db.toDoList[i] = db.toDoList[i - 1];
+              db.excisesList[i] = db.excisesList[i - 1];
             }
-            db.toDoList[current] = startItem;
+            db.excisesList[current] = startItem;
           }
           setState(() {
             db.updateDataBase();

@@ -99,9 +99,9 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 setWeight(inputValue);
-                for (var i = 0; i < db.toDoList.length; i++) {
-                  if (db.toDoList[i][3] == 'true') {
-                    db.toDoList[i][1] =
+                for (var i = 0; i < db.excisesList.length; i++) {
+                  if (db.excisesList[i][3] == 'true') {
+                    db.excisesList[i][1] =
                         Provider.of<BodyWeightValue>(context, listen: false)
                             .value;
                   }

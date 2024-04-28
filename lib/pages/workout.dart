@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
@@ -41,8 +43,16 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
     int cycle = 1;
     int quinta = currentWeek % 5;
-    List<Excise> excises = [];
-
+    List<Excise> excises = [
+      Excise(
+        index: 0,
+        title: col_1[0],
+        weight: col_2[0],
+        sets: col_3[0],
+        repeats: col_4[0],
+        hardDay: hardDay[0],
+      )
+    ];
     if (currentWeek >= 5) {
       cycle = (currentWeek ~/ 5) + 1;
     }
@@ -103,12 +113,12 @@ class _WorkoutPageState extends State<WorkoutPage> {
       }
 
       excises.add(Excise(
-        index: i,
-        title: col_1[i],
-        weight: col_2[i],
-        sets: col_3[i],
-        repeats: col_4[i],
-        hardDay: hardDay[i],
+        index: j,
+        title: col_1[j],
+        weight: col_2[j],
+        sets: col_3[j],
+        repeats: col_4[j],
+        hardDay: hardDay[j],
       ));
     }
 

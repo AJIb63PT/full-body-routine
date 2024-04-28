@@ -17,19 +17,19 @@ class WorkoutPage extends StatefulWidget {
 class _WorkoutPageState extends State<WorkoutPage> {
   @override
   Widget build(BuildContext context) {
-    final _myBox = Hive.box('myBox');
-    ExerciseDataBase db = ExerciseDataBase();
+    final myBox = Hive.box('myBox');
 
+    ExerciseDataBase db = ExerciseDataBase();
     String currentDay = Provider.of<CurrentDay>(context).day;
     int currentWeek = Provider.of<CurrentWeek>(context).counter;
-    if (_myBox.get('CurrentWeek') != null &&
-        _myBox.get('CurrentWeek') != currentWeek) {
-      currentWeek = _myBox.get('CurrentWeek');
+
+    if (myBox.get('CurrentWeek') != null &&
+        myBox.get('CurrentWeek') != currentWeek) {
+      currentWeek = myBox.get('CurrentWeek');
     }
-    if (_myBox.get("EXERCISES_LIST") == null) {
+    if (myBox.get("EXERCISES_LIST") == null) {
       db.createInitialData();
     } else {
-      // there already exists data
       db.loadData();
     }
     List<String> col_1 = [];
@@ -47,15 +47,15 @@ class _WorkoutPageState extends State<WorkoutPage> {
       isBWs.add(db.toDoList[i][3]);
     }
     int cycle = 1;
-    int quarter = currentWeek % 4;
+    int quinta = currentWeek % 5;
     List<Excise> excises = [];
 
-    if (currentWeek >= 4) {
-      cycle = (currentWeek ~/ 4) + 1;
+    if (currentWeek >= 5) {
+      cycle = (currentWeek ~/ 5) + 1;
     }
-    if (quarter == 0) {
-      quarter = 4;
-      cycle = (currentWeek ~/ 4);
+    if (quinta == 0) {
+      quinta = 5;
+      cycle = (currentWeek ~/ 5);
     }
     for (var i = 0; i < db.toDoList.length; i++) {
       if (currentDay == db.toDoList[i][2]) {
@@ -72,21 +72,30 @@ class _WorkoutPageState extends State<WorkoutPage> {
               .floor()
               .toString();
         }
-        if (quarter == 1) {
+        if (quinta == 1) {
           col_3[i] = '6';
           col_4[i] = '2';
         }
-        if (quarter == 2) {
+        if (quinta == 2) {
           col_3[i] = '4';
           col_4[i] = '3';
         }
-        if (quarter == 3) {
+        if (quinta == 3) {
           col_3[i] = '3';
           col_4[i] = '4';
         }
-        if (quarter == 4) {
+        if (quinta == 4) {
           col_3[i] = '2';
           col_4[i] = '6';
+        }
+      }
+
+      if (quinta == 5) {
+        if (bool.parse(isBWs[i])) {
+          col_4[i] = '6';
+          col_2[i] = db.toDoList[i][1];
+        } else {
+          col_2[i] = (double.parse(col_2[i]) * .5).floor().toString();
         }
       }
     }
@@ -107,11 +116,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
         hardDay: hardDay[i],
       ));
     }
-
-    // @override
-    // initState() {
-    //   super.initState();
-    // }
 
     getColors(Excise item) {
       if (item.title == 'Упражнение') {

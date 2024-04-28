@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:full_body_routine/pages/week.dart';
 import 'package:full_body_routine/pages/workout.dart';
-import 'package:full_body_routine/pages/exercises.dart';
+import 'package:full_body_routine/pages/exercises_list.dart';
 import 'package:full_body_routine/pages/profile_info.dart';
 
 void main() async {

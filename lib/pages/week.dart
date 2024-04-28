@@ -28,11 +28,11 @@ class _WeekPageState extends State<WeekPage> {
 
   @override
   Widget build(BuildContext context) {
-    final _myBox = Hive.box('myBox');
+    final myBox = Hive.box('myBox');
     int counter = Provider.of<CurrentWeek>(context).counter;
-    if (_myBox.get('CurrentWeek') != null &&
-        _myBox.get('CurrentWeek') != counter) {
-      counter = _myBox.get('CurrentWeek');
+    if (myBox.get('CurrentWeek') != null &&
+        myBox.get('CurrentWeek') != counter) {
+      counter = myBox.get('CurrentWeek');
     }
 
     return Scaffold(

@@ -1,11 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 import '../data/database.dart';
 
 import 'package:full_body_routine/main.dart';
+import '../utils/get_workload.dart';
+import '../utils/get_working_weight.dart';
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({
@@ -25,24 +25,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
     String currentDay = Provider.of<CurrentDay>(context).day;
     int currentWeek = Provider.of<CurrentWeek>(context).counter;
 
-    if (myBox.get('CurrentWeek') != null &&
-        myBox.get('CurrentWeek') != currentWeek) {
-      currentWeek = myBox.get('CurrentWeek');
-    }
-    if (myBox.get("EXERCISES_LIST") == null) {
-      db.createInitialData();
-    } else {
-      db.loadData();
-    }
-
     List<String> col_1 = ["Упражнение"];
     List<String> col_2 = ["Вес, кг"];
     List<String> col_3 = ["Подход"];
     List<String> col_4 = ["Повтор-ие"];
     List<String> hardDay = ["Вторник"];
-
-    int cycle = 1;
-    int quinta = currentWeek % 5;
     List<Excise> excises = [
       Excise(
         index: 0,
@@ -53,6 +40,20 @@ class _WorkoutPageState extends State<WorkoutPage> {
         hardDay: hardDay[0],
       )
     ];
+
+    if (myBox.get('CurrentWeek') != null &&
+        myBox.get('CurrentWeek') != currentWeek) {
+      currentWeek = myBox.get('CurrentWeek');
+    }
+    if (myBox.get("EXERCISES_LIST") == null) {
+      db.createInitialData();
+    } else {
+      db.loadData();
+    }
+
+    int cycle = 1;
+    int quinta = currentWeek % 5;
+
     if (currentWeek >= 5) {
       cycle = (currentWeek ~/ 5) + 1;
     }
@@ -60,56 +61,31 @@ class _WorkoutPageState extends State<WorkoutPage> {
       quinta = 5;
       cycle = (currentWeek ~/ 5);
     }
+
+    // the week counter in cycle (1-4th is progressive weeks, 5th is rest week)
     for (var i = 0; i < db.excisesList.length; i++) {
-      var j = i + 1;
+      int j = i + 1;
       var [title, weight, focusDay, isBW] = db.excisesList[i];
 
       col_1.add(title);
+      col_2.add(getWorkingWeight(WorkingWeightArg(
+          weight: weight,
+          cycle: cycle,
+          isBW: isBW,
+          isFocusDay: currentDay == focusDay,
+          quinta: quinta)));
       col_3.add('3');
       col_4.add('12');
       hardDay.add(focusDay);
 
       if (currentDay == focusDay) {
-        if (bool.parse(isBW)) {
-          col_2.add((double.parse(weight) +
-                  double.parse(weight) * .025 * cycle +
-                  double.parse(weight) * .05)
-              .floor()
-              .toString());
-        } else {
-          col_2.add((double.parse(weight) +
-                  double.parse(weight) * .05 * cycle +
-                  double.parse(weight) * .2)
-              .floor()
-              .toString());
-        }
-        if (quinta == 1) {
-          col_3[j] = '6';
-          col_4[j] = '2';
-        }
-        if (quinta == 2) {
-          col_3[j] = '4';
-          col_4[j] = '3';
-        }
-        if (quinta == 3) {
-          col_3[j] = '3';
-          col_4[j] = '4';
-        }
-        if (quinta == 4) {
-          col_3[j] = '2';
-          col_4[j] = '6';
-        }
-      } else {
-        col_2.add(weight);
+        List<String> res = getWorkload(quinta);
+        col_3[j] = res[0];
+        col_4[j] = res[1];
       }
 
-      if (quinta == 5) {
-        if (bool.parse(isBW)) {
-          col_4[j] = '6';
-          col_2[j] = weight;
-        } else {
-          col_2[j] = (double.parse(weight) * .5).floor().toString();
-        }
+      if (quinta == 5 && bool.parse(isBW)) {
+        col_4[j] = '6';
       }
 
       excises.add(Excise(

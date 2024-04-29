@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:full_body_routine/util/my_switch.dart';
+import 'package:full_body_routine/components/my_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
 import 'my_button.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../data/database.dart';
-import '../util/dialog_box.dart';
-import '../util/exercise_tile.dart';
+import '../components/dialog_box.dart';
+import '../components/exercise_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
 

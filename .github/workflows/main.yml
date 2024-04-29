@@ -38,6 +38,6 @@ jobs:
         with:
           allowUpdates: true
           artifactErrorsFailBuild: true
-          artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/app.ipa"
+          artifacts: "build/app/outputs/apk/*,build/ios/iphoneos/app.ipa"
           tag: v2.3.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}

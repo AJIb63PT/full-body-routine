@@ -21,7 +21,6 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.13.9'
-          node-version: '20.x'
       - run: flutter pub get 
       # - run: flutter build appbundle 
       - run: flutter build apk --split-per-abi
@@ -38,7 +37,6 @@ jobs:
         with:
           allowUpdates: true
           artifactErrorsFailBuild: true
-          
           artifacts: "build/app/outputs/apk/release/*.apk,build/ios/iphoneos/app.ipa"
           tag: v2.3.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}

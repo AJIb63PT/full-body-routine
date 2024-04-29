@@ -51,9 +51,10 @@ class _WorkoutPageState extends State<WorkoutPage> {
       db.loadData();
     }
 
+    // count cycle number by current week
+    // the cycle consists of 5 weeks (1-4th is progressive weeks, 5th is rest week)
     int cycle = 1;
     int quinta = currentWeek % 5;
-
     if (currentWeek >= 5) {
       cycle = (currentWeek ~/ 5) + 1;
     }
@@ -62,31 +63,26 @@ class _WorkoutPageState extends State<WorkoutPage> {
       cycle = (currentWeek ~/ 5);
     }
 
-    // the week counter in cycle (1-4th is progressive weeks, 5th is rest week)
+    // setting workload and Weight in table for workout
     for (var i = 0; i < db.excisesList.length; i++) {
       int j = i + 1;
       var [title, weight, focusDay, isBW] = db.excisesList[i];
+      bool isFocusDay = currentDay == focusDay;
 
-      col_1.add(title);
-      col_2.add(getWorkingWeight(WorkingWeightArg(
+      List<String> workload = getWorkload(
+          WorkloadArg(quinta: quinta, isFocusDay: isFocusDay, isBW: isBW));
+      String workingWeight = getWorkingWeight(WorkingWeightArg(
           weight: weight,
           cycle: cycle,
           isBW: isBW,
-          isFocusDay: currentDay == focusDay,
-          quinta: quinta)));
-      col_3.add('3');
-      col_4.add('12');
+          isFocusDay: isFocusDay,
+          quinta: quinta));
+
+      col_1.add(title);
+      col_2.add(workingWeight);
+      col_3.add(workload[0]);
+      col_4.add(workload[1]);
       hardDay.add(focusDay);
-
-      if (currentDay == focusDay) {
-        List<String> res = getWorkload(quinta);
-        col_3[j] = res[0];
-        col_4[j] = res[1];
-      }
-
-      if (quinta == 5 && bool.parse(isBW)) {
-        col_4[j] = '6';
-      }
 
       excises.add(Excise(
         index: j,

@@ -1,8 +1,23 @@
-List<String> getWorkload(int quinta) {
-  if (quinta == 1) return ['6', '2'];
-  if (quinta == 2) return ['4', '3'];
-  if (quinta == 3) return ['3', '4'];
-  if (quinta == 4) return ['2', '6'];
+class WorkloadArg {
+  bool isFocusDay;
+  int quinta;
+  String isBW;
+
+  WorkloadArg({
+    required this.isFocusDay,
+    required this.quinta,
+    required this.isBW,
+  });
+}
+
+List<String> getWorkload(WorkloadArg item) {
+  if (item.isFocusDay) {
+    if (item.quinta == 1) return ['6', '2'];
+    if (item.quinta == 2) return ['4', '3'];
+    if (item.quinta == 3) return ['3', '4'];
+    if (item.quinta == 4) return ['2', '6'];
+  }
+  if (item.quinta == 5 && bool.parse(item.isBW)) return ['3', '6'];
 
   return ['3', '12'];
 }

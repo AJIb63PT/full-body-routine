@@ -21,6 +21,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.13.9'
+          node-version: '20.x'
       - run: flutter pub get 
       # - run: flutter build appbundle 
       - run: flutter build apk --split-per-abi

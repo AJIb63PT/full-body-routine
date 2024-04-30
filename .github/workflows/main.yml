@@ -24,7 +24,7 @@ jobs:
           flutter-version: '3.13.9'
       - run: flutter pub get 
       # - run: flutter build appbundle 
-      - run: flutter build apk --build-name=3.0.0 --build-number=5 --split-per-abi
+      - run: flutter build apk --split-per-abi
       - run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
@@ -38,6 +38,7 @@ jobs:
         with:
           allowUpdates: true
           artifactErrorsFailBuild: true
-          artifacts: "build/app/outputs/apk/release/*.apk,build/ios/iphoneos/app.ipa"
-          tag: v3.0.${{ github.run_number }}
+          artifacts: "build/app/outputs/flutter-apk/*.apk,build/ios/iphoneos/app.ipa"
+          # tag: v3.0.${{ github.run_number }}
+          tag: v3.0.1
           token: ${{ secrets.TOKEN }}

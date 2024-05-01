@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:convert';
 
 import 'package:hive/hive.dart';
 import '../data/database.dart';
-// import '../controller/app_controller.dart';
+import '../utils/check_latest_version.dart';
+
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-// import 'package:package_info_plus/package_info_plus.dart';
-// import 'package:url_launcher/url_launcher.dart';
 
 class ProfileInfoPage extends StatefulWidget {
   const ProfileInfoPage({super.key});
@@ -28,42 +24,6 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
   RxString currentVersion = "".obs;
   RxString newAppUrl = "".obs;
 
-  Future<void> checkLatestVersion() async {
-    const repositoryOwner = 'AJIb63PT';
-    const repositoryName = 'full-body-routine';
-    final response = await http.get(Uri.parse(
-      'https://api.github.com/repos/$repositoryOwner/$repositoryName/releases/latest',
-    ));
-    print('response');
-
-    print(response.body);
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      final tagName = data['tag_name'];
-      oldVersion.value = tagName;
-      final assets = data['assets'] as List<dynamic>;
-      print('assets');
-      print(assets);
-      for (final asset in assets) {
-        // добавить проверку на устройство
-        final assetName = asset['name'];
-        final assetDownloadUrl = asset['browser_download_url'];
-        print('`1`1`1`1`1`1`1`1`1`1`1`1`1`1`1`');
-        print(asset);
-
-        newAppUrl.value = assetDownloadUrl;
-      }
-
-      if (currentVersion.value != oldVersion.value) {
-        // checkUpdate();
-      }
-    } else {
-      print(
-          'Failed to fetch GitHub release info. Status code: ${response.statusCode}');
-    }
-  }
-
   @override
   void initState() {
     if (_myBox.get("EXERCISES_LIST") == null) {
@@ -76,8 +36,10 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    // AppController appController = Get.put(AppController());
-    checkLatestVersion();
+    checkLatestVersion(CheckLatestVersionArg(
+        oldVersion: oldVersion,
+        currentVersion: currentVersion,
+        newAppUrl: newAppUrl));
     String bodyWeight = Provider.of<BodyWeightValue>(
       context,
     ).value;
@@ -123,7 +85,7 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           },
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.update),
         ));
   }
 

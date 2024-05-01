@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:url_launcher/url_launcher.dart';
 import 'package:hive/hive.dart';
 import '../data/database.dart';
 import '../utils/check_latest_version.dart';
 
 import 'package:provider/provider.dart';
 import 'package:full_body_routine/main.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:get/get.dart';
 
 class ProfileInfoPage extends StatefulWidget {
   const ProfileInfoPage({super.key});
@@ -20,9 +19,6 @@ class ProfileInfoPage extends StatefulWidget {
 class _ProfileInfoPageState extends State<ProfileInfoPage> {
   final _myBox = Hive.box('myBox');
   ExerciseDataBase db = ExerciseDataBase();
-  RxString oldVersion = "".obs;
-  RxString currentVersion = "".obs;
-  RxString newAppUrl = "".obs;
 
   @override
   void initState() {
@@ -36,10 +32,6 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    checkLatestVersion(CheckLatestVersionArg(
-        oldVersion: oldVersion,
-        currentVersion: currentVersion,
-        newAppUrl: newAppUrl));
     String bodyWeight = Provider.of<BodyWeightValue>(
       context,
     ).value;
@@ -70,20 +62,7 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            final snackBar = SnackBar(
-              content: Text('New Update Available'),
-              action: SnackBarAction(
-                label: 'Undo',
-                onPressed: () {
-                  launchUrl(
-                    Uri.parse(newAppUrl.value),
-                    mode: LaunchMode.externalApplication,
-                  );
-                },
-              ),
-              duration: Duration(days: 1),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            _snackBarBuilder(context);
           },
           child: const Icon(Icons.update),
         ));
@@ -98,7 +77,7 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(' Новый Вес тела'),
+          title: const Text('Новый Вес тела'),
           content: TextFormField(
             keyboardType: TextInputType.number,
             inputFormatters: [
@@ -144,5 +123,27 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
         );
       },
     );
+  }
+
+  Future<void> _snackBarBuilder(BuildContext context) async {
+    String newAppUrl = "";
+    CheckLatestVersionRes res = await checkLatestVersion();
+
+    final snackBar = SnackBar(
+      content: Text(res.statusText),
+      action: SnackBarAction(
+        label: res.hasUpdate ? 'Download' : 'Close',
+        onPressed: () {
+          res.hasUpdate
+              ? launchUrl(
+                  Uri.parse(newAppUrl),
+                  mode: LaunchMode.externalApplication,
+                )
+              : ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+      duration: Duration(days: 1),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

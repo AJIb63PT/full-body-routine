@@ -56,6 +56,9 @@ Future<CheckLatestVersionRes> checkLatestVersion() async {
     print(
         'Failed to fetch GitHub release info. Status code: ${response.statusCode}');
   }
+  print(currentVersion);
+  print(oldVersion);
+
   return CheckLatestVersionRes(
       hasUpdate: currentVersion != oldVersion,
       newAppUrl: newAppUrl,

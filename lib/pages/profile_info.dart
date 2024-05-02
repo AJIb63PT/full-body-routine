@@ -126,7 +126,6 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
   }
 
   Future<void> _snackBarBuilder(BuildContext context) async {
-    String newAppUrl = "";
     CheckLatestVersionRes res = await checkLatestVersion();
 
     final snackBar = SnackBar(
@@ -136,13 +135,13 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
         onPressed: () {
           res.hasUpdate
               ? launchUrl(
-                  Uri.parse(newAppUrl),
+                  Uri.parse(res.newAppUrl),
                   mode: LaunchMode.externalApplication,
                 )
               : ScaffoldMessenger.of(context).hideCurrentSnackBar();
         },
       ),
-      duration: Duration(days: 1),
+      duration: const Duration(days: 1),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

@@ -28,7 +28,8 @@ jobs:
       - name: Get pubspec version
         id: version
         run: |
-          VERSION=$(sed -n 's/version: \(.*\)/\1/p' pubspec.yaml)
+          # VERSION=$(sed -n 's/version: \(.*\)/\1/p' pubspec.yaml)
+          VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
           echo "::set-output name=version::$VERSION"
       # - run: flutter clean 
       - run: flutter pub get 

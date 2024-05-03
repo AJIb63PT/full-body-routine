@@ -20,16 +20,18 @@ jobs:
           distribution: 'zulu' 
           java-version: '17'
           cache: 'gradle'
+      - name: Get version
+        id: version
+        # run: |
+        #   VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
+        #   echo "{version}={VERSION}" >> $GITHUB_OUTPUT
+        run: echo "{version}={$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)}" >> $GITHUB_OUTPUT
       - uses: subosito/flutter-action@v2.14.0
         with:
           flutter-version: '3.19.6'
           channel: 'stable'
           cache: true
-      - name: Get version
-        id: version
-        run: |
-          VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
-          echo "{version}={VERSION}" >> $GITHUB_OUTPUT
+
       # начало подписи 
       - name: Download Android keystore
         id: android_keystore

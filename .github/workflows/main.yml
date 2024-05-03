@@ -30,6 +30,20 @@ jobs:
         run: |
           VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
           echo "{version}={$VERSION}" >> $GITHUB_OUTPUT
+      # начало подписи 
+      - name: Download Android keystore
+        id: android_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: upload-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Create key.properties
+        run: |
+          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+      # конец подписи 
       - run: flutter pub get 
       - run: flutter build apk --split-per-abi
       - run: |

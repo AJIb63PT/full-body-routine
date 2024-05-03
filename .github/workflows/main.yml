@@ -29,7 +29,7 @@ jobs:
         id: version
         run: |
           VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
-          echo "{version}={$VERSION}" >> $GITHUB_OUTPUT
+          echo "{version}={VERSION}" >> $GITHUB_OUTPUT
       # начало подписи 
       - name: Download Android keystore
         id: android_keystore

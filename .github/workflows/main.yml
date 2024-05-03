@@ -22,19 +22,14 @@ jobs:
           cache: 'gradle'
       - name: Get version
         id: version
-        # run: |
-        #   VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
-        #   echo "{version}={VERSION}" >> $GITHUB_OUTPUT
-        run: echo "{version}={$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)}" >> $GITHUB_OUTPUT
-      - name: Check version
-        id: check
-        run: echo ${{ steps.version.outputs.version }}
+        run: |
+          VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
+          echo "::set-output name=version::$VERSION"
       - uses: subosito/flutter-action@v2.14.0
         with:
           flutter-version: '3.19.6'
           channel: 'stable'
           cache: true
-
       # начало подписи 
       - name: Download Android keystore
         id: android_keystore

@@ -26,6 +26,9 @@ jobs:
         #   VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
         #   echo "{version}={VERSION}" >> $GITHUB_OUTPUT
         run: echo "{version}={$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)}" >> $GITHUB_OUTPUT
+      - name: Check version
+        id: check
+        run: echo ${{ steps.version.outputs.version }}
       - uses: subosito/flutter-action@v2.14.0
         with:
           flutter-version: '3.19.6'

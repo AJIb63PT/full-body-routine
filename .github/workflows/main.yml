@@ -31,9 +31,6 @@ jobs:
         run: |
           VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
           echo "::set-output name=version::$VERSION"
-  
-      - name: Print version
-        run: echo ${{ steps.yq.outputs.result }}
       # - run: flutter clean 
       - run: flutter pub get 
       # - run: flutter build appbundle 

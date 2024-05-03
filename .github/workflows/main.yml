@@ -22,9 +22,10 @@ jobs:
           cache: 'gradle'
       - name: Get version
         id: version
+          # echo "::set-output version=version::$VERSION"
         run: |
           VERSION=$(awk '/version:/ {gsub(/\+.*$/, "", $2); print $2; exit;}' pubspec.yaml)
-          echo "::set-output name=version::$VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
       - uses: subosito/flutter-action@v2.14.0
         with:
           flutter-version: '3.19.6'

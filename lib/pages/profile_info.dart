@@ -131,7 +131,7 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
     final snackBar = SnackBar(
       content: Text(res.statusText),
       action: SnackBarAction(
-        label: res.hasUpdate ? 'Download' : 'Close',
+        label: res.hasUpdate ? 'Скачать' : 'Закрыть',
         onPressed: () {
           res.hasUpdate
               ? launchUrl(
@@ -141,7 +141,7 @@ class _ProfileInfoPageState extends State<ProfileInfoPage> {
               : ScaffoldMessenger.of(context).hideCurrentSnackBar();
         },
       ),
-      duration: const Duration(days: 1),
+      duration: const Duration(minutes: 2),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

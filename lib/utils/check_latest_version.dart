@@ -48,9 +48,9 @@ Future<CheckLatestVersionRes> checkLatestVersion() async {
     // }
 
     if (currentVersion != oldVersion) {
-      statusText = 'New Update Available';
+      statusText = 'Доступно обновление';
     } else {
-      statusText = 'No Update';
+      statusText = 'Нет обновлений';
     }
   } else {
     print(

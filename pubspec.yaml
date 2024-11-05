@@ -16,8 +16,8 @@ description: A new Flutter project.
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.2.5+2
- 
+version: 2.2.6+2
+
 environment:
     sdk: '>=3.1.5 <4.0.0'
 
@@ -49,17 +49,17 @@ dev_dependencies:
     flutter_lints: ^2.0.0
 
 flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/icon.png"
-  min_sdk_android: 16 # android min sdk min:16, default 21
+    android: true
+    ios: true
+    image_path: 'assets/icon.png'
+    min_sdk_android: 16 # android min sdk min:16, default 21
 
-  # macos:
-  #   generate: true
-  #   image_path: "path/to/image.png"
+    # macos:
+    #   generate: true
+    #   image_path: "path/to/image.png"
 
 flutter_app_name:
-  name: "Full Body Routine"
+    name: 'Full Body Routine'
 
 flutter:
     uses-material-design: true

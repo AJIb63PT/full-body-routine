@@ -20,7 +20,9 @@ String getWorkingWeight(WorkingWeightArg item) {
   bool isFD = item.isFocusDay;
 
   if (!isFD) {
-    if (isFifth) return (double.parse(item.weight) * .5).floor().toString();
+    if (isFifth && !isBW) {
+      return (double.parse(item.weight) * .5).floor().toString();
+    }
     return item.weight;
   }
   if (isBW) {

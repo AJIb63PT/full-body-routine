@@ -101,7 +101,7 @@ class BodyWeightToggleState extends ChangeNotifier {
 
 class BodyWeightValue extends ChangeNotifier {
   final _myBox = Hive.box('myBox');
-  String value = '80';
+  String value = '85';
   void setBodyWeight(val) {
     if (_myBox.get('BodyWeight') != null && _myBox.get('BodyWeight') != value) {
       value = _myBox.get('BodyWeight');

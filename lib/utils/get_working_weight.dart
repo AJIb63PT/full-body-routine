@@ -25,6 +25,7 @@ String getWorkingWeight(WorkingWeightArg item) {
     }
     return item.weight;
   }
+
   if (isBW) {
     if (isFifth) return item.weight;
     return (double.parse(item.weight) +
@@ -33,6 +34,7 @@ String getWorkingWeight(WorkingWeightArg item) {
         .floor()
         .toString();
   }
+
   if (isFifth) return (double.parse(item.weight) * .5).floor().toString();
 
   return (double.parse(item.weight) +

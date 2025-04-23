@@ -7,4 +7,5 @@
    
 ## get started
 1. set bodyweight
-2. set Exec. weight can do 12  reps
+2. set Exec. weight can do 12 reps
+3. click on "+" to weekly progress 
